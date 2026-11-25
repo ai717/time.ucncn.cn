@@ -59,6 +59,9 @@
         <button class="visual-btn active" data-visual="flip" title="机械翻牌 (快捷键 V)">
           <span>📟</span> <span data-i18n="visual_flip">机械翻牌</span>
         </button>
+        <button class="visual-btn" data-visual="pendulum" title="复古摆钟 (快捷键 V)">
+          <span>🕰️</span> <span data-i18n="visual_pendulum">复古摆钟</span>
+        </button>
         <button class="visual-btn" data-visual="dial" title="扫秒表盘 (快捷键 V)">
           <span>⏱️</span> <span data-i18n="visual_dial">扫秒表盘</span>
         </button>
@@ -216,7 +219,142 @@
       <!-- End of Visual Form: Split-Flap Clock -->
     </div>
 
-    <!-- 2. Visual Form: Classic Dial Stopwatch (扫秒表盘) -->
+    <!-- 2. Visual Form: Vintage Pendulum Clock (复古摆钟) -->
+    <div class="visual-container" id="visual-container-pendulum">
+      <div class="visual-pendulum-wrapper">
+        <svg class="pendulum-clock-svg" id="pendulum-clock-svg" viewBox="0 0 260 420">
+          <defs>
+            <!-- Rich Mahogany / Walnut Case Gradient -->
+            <linearGradient id="pendulum-case-grad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#1f140e" />
+              <stop offset="20%" stop-color="#3b2014" />
+              <stop offset="50%" stop-color="#4a2c1d" />
+              <stop offset="80%" stop-color="#3b2014" />
+              <stop offset="100%" stop-color="#1f140e" />
+            </linearGradient>
+
+            <!-- Polished Brass Bezel Gradient -->
+            <linearGradient id="pendulum-brass-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#78531d" />
+              <stop offset="25%" stop-color="#d4af37" />
+              <stop offset="50%" stop-color="#fef08a" />
+              <stop offset="75%" stop-color="#b45309" />
+              <stop offset="100%" stop-color="#451a03" />
+            </linearGradient>
+
+            <!-- Dial Face Gradient -->
+            <radialGradient id="pendulum-dial-grad" cx="50%" cy="45%" r="55%">
+              <stop offset="0%" stop-color="#1c1917" />
+              <stop offset="70%" stop-color="#141210" />
+              <stop offset="100%" stop-color="#09090b" />
+            </radialGradient>
+
+            <!-- Heavy Brass Pendulum Bob Radial Highlight -->
+            <radialGradient id="pendulum-bob-grad" cx="40%" cy="35%" r="65%">
+              <stop offset="0%" stop-color="#fef9c3" />
+              <stop offset="30%" stop-color="#eab308" />
+              <stop offset="70%" stop-color="#a16207" />
+              <stop offset="100%" stop-color="#451a03" />
+            </radialGradient>
+
+            <!-- Glass Chamber Sheen -->
+            <linearGradient id="pendulum-glass-sheen" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.18)" />
+              <stop offset="40%" stop-color="rgba(255,255,255,0.03)" />
+              <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+            </linearGradient>
+          </defs>
+
+          <!-- 1. Wooden Arch Cabinet Case -->
+          <path class="pendulum-case-body" d="M 32,82 C 32,16 228,16 228,82 L 228,396 C 228,406 218,414 206,414 L 54,414 C 42,414 32,406 32,396 Z" fill="url(#pendulum-case-grad)" stroke="#78531d" stroke-width="2.5" />
+          
+          <!-- Top Architectural Pediment / Brass Finial -->
+          <circle cx="130" cy="18" r="6.5" fill="url(#pendulum-brass-grad)" stroke="#451a03" stroke-width="1" />
+          <path d="M 116,28 Q 130,22 144,28" stroke="url(#pendulum-brass-grad)" stroke-width="3" fill="none" stroke-linecap="round" />
+
+          <!-- Bottom Moulding Trim Base -->
+          <rect x="22" y="408" width="216" height="8" rx="4" fill="url(#pendulum-brass-grad)" stroke="#451a03" stroke-width="1" />
+
+          <!-- 2. Lower Pendulum Exhibition Chamber (Darkened Recessed Chamber) -->
+          <rect x="48" y="192" width="164" height="204" rx="12" fill="#09090b" stroke="url(#pendulum-brass-grad)" stroke-width="1.8" />
+          <!-- Inner Shadow / Depth in Chamber -->
+          <rect x="52" y="196" width="156" height="196" rx="9" fill="rgba(0,0,0,0.5)" />
+
+          <!-- 3. Swinging Brass Pendulum (Pivot at 130, 115) -->
+          <g id="pendulum-arm" class="pendulum-swing-group">
+            <!-- Brass Pendulum Rod -->
+            <line x1="130" y1="188" x2="130" y2="340" stroke="url(#pendulum-brass-grad)" stroke-width="4" stroke-linecap="round" />
+            <!-- Heavy Mirror-Polished Brass Bob -->
+            <circle class="pendulum-bob" cx="130" cy="336" r="26" fill="url(#pendulum-bob-grad)" stroke="#78531d" stroke-width="2" />
+            <!-- Decorative Inner Bob Rings -->
+            <circle cx="130" cy="336" r="17" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" />
+            <circle cx="130" cy="336" r="6" fill="#78531d" />
+            <!-- Bottom Rating Nut (调速螺母) -->
+            <polygon points="126,362 134,362 132,374 128,374" fill="url(#pendulum-brass-grad)" stroke="#451a03" stroke-width="0.8" />
+          </g>
+
+          <!-- Glass Chamber Specular Reflection Overlay -->
+          <rect x="50" y="194" width="160" height="200" rx="10" fill="url(#pendulum-glass-sheen)" pointer-events="none" />
+
+          <!-- 4. Upper Circular Dial Section -->
+          <!-- Outer Brass Bezel -->
+          <circle cx="130" cy="115" r="76" fill="url(#pendulum-brass-grad)" stroke="#451a03" stroke-width="1.5" />
+          <!-- Inner Dial Face -->
+          <circle class="pendulum-dial-face" cx="130" cy="115" r="71" fill="url(#pendulum-dial-grad)" stroke="#a16207" stroke-width="1" />
+          <!-- Dial Inner Rim Bead -->
+          <circle cx="130" cy="115" r="64" fill="none" stroke="rgba(212,175,55,0.4)" stroke-width="0.8" stroke-dasharray="2 4" />
+
+          <!-- Roman Numerals & Classic Hour Indices -->
+          <text class="pendulum-numeral" x="130" y="65" text-anchor="middle">XII</text>
+          <text class="pendulum-numeral" x="183" y="119" text-anchor="middle">III</text>
+          <text class="pendulum-numeral" x="130" y="171" text-anchor="middle">VI</text>
+          <text class="pendulum-numeral" x="77" y="119" text-anchor="middle">IX</text>
+
+          <!-- 12-Hour Dot Markers -->
+          <circle cx="157" cy="69" r="2.2" class="pendulum-dot" />
+          <circle cx="178" cy="89" r="2.2" class="pendulum-dot" />
+          <circle cx="178" cy="142" r="2.2" class="pendulum-dot" />
+          <circle cx="157" cy="162" r="2.2" class="pendulum-dot" />
+          <circle cx="103" cy="162" r="2.2" class="pendulum-dot" />
+          <circle cx="82" cy="142" r="2.2" class="pendulum-dot" />
+          <circle cx="82" cy="89" r="2.2" class="pendulum-dot" />
+          <circle cx="103" cy="69" r="2.2" class="pendulum-dot" />
+
+          <!-- Center Pivot Assembly -->
+          <!-- Hour Hand (Breguet spade hand) -->
+          <g id="pendulum-hour-hand" class="pendulum-hand hour-hand">
+            <line x1="130" y1="115" x2="130" y2="76" stroke="#fef08a" stroke-width="3.5" stroke-linecap="round" />
+            <circle cx="130" cy="84" r="4.2" fill="#fef08a" />
+            <line x1="130" y1="115" x2="130" y2="126" stroke="#fef08a" stroke-width="2.2" />
+          </g>
+
+          <!-- Minute Hand (Long pointer hand) -->
+          <g id="pendulum-minute-hand" class="pendulum-hand minute-hand">
+            <line x1="130" y1="115" x2="130" y2="58" stroke="#fef08a" stroke-width="2.4" stroke-linecap="round" />
+            <circle cx="130" cy="67" r="3.2" fill="#fef08a" />
+            <line x1="130" y1="115" x2="130" y2="128" stroke="#fef08a" stroke-width="1.8" />
+          </g>
+
+          <!-- Second Hand (Slender red needle with counterpoise) -->
+          <g id="pendulum-second-hand" class="pendulum-hand second-hand">
+            <line x1="130" y1="115" x2="130" y2="50" stroke="#ef4444" stroke-width="1.4" stroke-linecap="round" />
+            <circle cx="130" cy="115" r="3" fill="#ef4444" />
+            <line x1="130" y1="115" x2="130" y2="134" stroke="#ef4444" stroke-width="1.8" />
+            <circle cx="130" cy="134" r="2.5" fill="#ef4444" />
+          </g>
+
+          <!-- Brass Pivot Cap -->
+          <circle cx="130" cy="115" r="4.5" fill="url(#pendulum-brass-grad)" stroke="#451a03" stroke-width="0.8" />
+        </svg>
+
+        <!-- Digital Readout Below Clock Base -->
+        <div class="pendulum-readout-pill">
+          <span class="pendulum-readout-time" id="pendulum-readout">12:00:00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Visual Form: Classic Dial Stopwatch (扫秒表盘) -->
     <div class="visual-container" id="visual-container-dial">
       <div class="visual-dial-wrapper">
         <div class="dial-crown" id="dial-crown" title="表冠"></div>

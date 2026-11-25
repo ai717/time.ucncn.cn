@@ -242,6 +242,123 @@ body {
   display: flex;
 }
 
+/* ================= 2. Vintage Pendulum Clock (复古摆钟) ================= */
+.visual-pendulum-wrapper {
+  position: relative;
+  width: clamp(230px, 28vw, 320px);
+  height: clamp(370px, 46vw, 510px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 18px 45px rgba(0, 0, 0, 0.65));
+}
+
+.pendulum-clock-svg {
+  width: 100%;
+  height: 88%;
+  overflow: visible;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.4));
+}
+
+.pendulum-numeral {
+  font-family: 'Cinzel', 'Playfair Display', 'Times New Roman', Georgia, serif;
+  font-weight: 700;
+  font-size: 14px;
+  fill: #fef08a;
+  letter-spacing: 0.5px;
+}
+
+.pendulum-dot {
+  fill: #d4af37;
+  opacity: 0.85;
+}
+
+/* Harmonic Pendulum Oscillation (Physical T=2s Seconds Pendulum) */
+.pendulum-swing-group {
+  transform-origin: 130px 115px;
+  animation: pendulum-harmonic-swing 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pendulum-harmonic-swing {
+  0% {
+    transform: rotate(-7.5deg);
+  }
+  50% {
+    transform: rotate(7.5deg);
+  }
+  100% {
+    transform: rotate(-7.5deg);
+  }
+}
+
+.pendulum-hand {
+  transform-origin: 130px 115px;
+}
+
+.pendulum-readout-pill {
+  margin-top: 10px;
+  padding: 4px 14px;
+  background: rgba(18, 18, 20, 0.85);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 9999px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.pendulum-readout-time {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: clamp(14px, 1.8vw, 18px);
+  font-weight: 700;
+  color: #fef08a;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 10px rgba(234, 179, 8, 0.4);
+}
+
+/* Light Theme Adaptations for Vintage Pendulum Clock */
+[data-theme="light"] .visual-pendulum-wrapper {
+  filter: drop-shadow(0 16px 36px rgba(120, 53, 15, 0.25));
+}
+[data-theme="light"] .pendulum-dial-face {
+  fill: #fffbeb !important;
+}
+[data-theme="light"] .pendulum-numeral {
+  fill: #451a03 !important;
+}
+[data-theme="light"] .pendulum-dot {
+  fill: #92400e !important;
+}
+[data-theme="light"] .pendulum-hand line {
+  stroke: #78350f !important;
+}
+[data-theme="light"] .pendulum-hand circle {
+  fill: #78350f !important;
+}
+[data-theme="light"] .pendulum-hand.second-hand line {
+  stroke: #dc2626 !important;
+}
+[data-theme="light"] .pendulum-hand.second-hand circle {
+  fill: #dc2626 !important;
+}
+[data-theme="light"] .pendulum-readout-pill {
+  background: rgba(254, 252, 232, 0.95);
+  border-color: rgba(180, 83, 9, 0.35);
+  box-shadow: 0 4px 14px rgba(120, 53, 15, 0.15);
+}
+[data-theme="light"] .pendulum-readout-time {
+  color: #78350f;
+  text-shadow: none;
+}
+
+/* Amber Theme Adaptations */
+[data-theme="amber"] .pendulum-readout-pill {
+  border-color: rgba(245, 158, 11, 0.4);
+}
+[data-theme="amber"] .pendulum-readout-time {
+  color: #fbbf24;
+  text-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+}
+
 .visual-dial-wrapper {
   position: relative;
   width: clamp(260px, 36vw, 380px);

@@ -19,6 +19,7 @@ const I18N = {
 
     // Visual Representations
     visual_flip: '机械翻牌',
+    visual_pendulum: '复古摆钟',
     visual_dial: '扫秒表盘',
     visual_sand: '流沙漏斗',
     visual_bomb: '火花炸弹',
@@ -101,6 +102,7 @@ const I18N = {
 
     // Visual Representations
     visual_flip: 'Flip Clock',
+    visual_pendulum: 'Vintage Pendulum',
     visual_dial: 'Stopwatch Dial',
     visual_sand: 'Hourglass',
     visual_bomb: 'Spark Bomb',
@@ -496,15 +498,30 @@ class ZenFlipClock {
       s2: new FlipCard(document.getElementById('card-s2'))
     };
 
+    // Visual Representations Allowed per Mode
+    this.modeVisualMap = {
+      clock: ['flip', 'pendulum'],
+      stopwatch: ['flip', 'dial'],
+      countdown: ['flip', 'sand', 'bomb']
+    };
+
     // Visual Representations State & DOM Elements
     this.currentVisual = localStorage.getItem('zenflip_visual') || 'flip';
     this.visualButtons = document.querySelectorAll('.visual-btn');
     this.visualContainers = {
       flip: document.getElementById('visual-container-flip'),
+      pendulum: document.getElementById('visual-container-pendulum'),
       dial: document.getElementById('visual-container-dial'),
       sand: document.getElementById('visual-container-sand'),
       bomb: document.getElementById('visual-container-bomb')
     };
+
+    // Pendulum Clock Visual Elements
+    this.pendulumHourHand = document.getElementById('pendulum-hour-hand');
+    this.pendulumMinuteHand = document.getElementById('pendulum-minute-hand');
+    this.pendulumSecondHand = document.getElementById('pendulum-second-hand');
+    this.pendulumReadout = document.getElementById('pendulum-readout');
+    this.pendulumArm = document.getElementById('pendulum-arm');
 
     // Dial Visual Elements
     this.dialNeedle = document.getElementById('dial-needle');
@@ -638,13 +655,24 @@ class ZenFlipClock {
       pill.classList.toggle('active', pill.getAttribute('data-tick') === curTick);
     });
 
+    this.updateVisualBarForMode(this.currentMode);
     this.setVisual(this.currentVisual);
+  }
+
+  updateVisualBarForMode(mode) {
+    const allowed = this.modeVisualMap[mode] || ['flip'];
+    this.visualButtons.forEach(btn => {
+      const v = btn.getAttribute('data-visual');
+      const isAllowed = allowed.includes(v);
+      btn.style.display = isAllowed ? '' : 'none';
+    });
   }
 
   // ================= Visual Representation Switching =================
   setVisual(visualName) {
-    if (!this.visualContainers[visualName]) {
-      visualName = 'flip';
+    const allowed = this.modeVisualMap[this.currentMode] || ['flip'];
+    if (!allowed.includes(visualName) || !this.visualContainers[visualName]) {
+      visualName = allowed[0];
     }
     this.currentVisual = visualName;
     localStorage.setItem('zenflip_visual', visualName);
@@ -671,7 +699,7 @@ class ZenFlipClock {
   }
 
   cycleVisual() {
-    const list = ['flip', 'dial', 'sand', 'bomb'];
+    const list = this.modeVisualMap[this.currentMode] || ['flip'];
     const idx = list.indexOf(this.currentVisual);
     const nextVisual = list[(idx + 1) % list.length];
     this.setVisual(nextVisual);
@@ -717,6 +745,23 @@ class ZenFlipClock {
     }
     if (this.bombReadout) {
       this.bombReadout.textContent = shortStr;
+    }
+
+    // 4. Vintage Pendulum Clock Update
+    if (this.pendulumHourHand && this.pendulumMinuteHand && this.pendulumSecondHand) {
+      const h = parseInt(hStr, 10) || 0;
+      const m = parseInt(mStr, 10) || 0;
+      const s = parseInt(sStr, 10) || 0;
+      const ms = Date.now() % 1000;
+      const hDeg = (h % 12 + m / 60) * 30;
+      const mDeg = (m + s / 60) * 6;
+      const sDeg = (s + ms / 1000) * 6;
+      this.pendulumHourHand.setAttribute('transform', `rotate(${hDeg.toFixed(1)} 130 115)`);
+      this.pendulumMinuteHand.setAttribute('transform', `rotate(${mDeg.toFixed(1)} 130 115)`);
+      this.pendulumSecondHand.setAttribute('transform', `rotate(${sDeg.toFixed(1)} 130 115)`);
+    }
+    if (this.pendulumReadout) {
+      this.pendulumReadout.textContent = timeStr;
     }
   }
 
@@ -1064,15 +1109,20 @@ class ZenFlipClock {
     this.timeProgressBar.style.display = 'none';
     this.pacingBadge.style.display = 'none';
 
-    // Auto-match appropriate visual representation for the mode
+    // Auto-filter visual representation buttons for the new mode
+    this.updateVisualBarForMode(mode);
+    const allowed = this.modeVisualMap[mode] || ['flip'];
+
     if (autoMatchVisual) {
       if (mode === 'clock') {
-        this.setVisual('flip');
+        this.setVisual(this.currentVisual === 'pendulum' ? 'pendulum' : 'flip');
       } else if (mode === 'stopwatch') {
-        this.setVisual('dial');
+        this.setVisual(this.currentVisual === 'dial' ? 'dial' : 'dial');
       } else if (mode === 'countdown') {
-        this.setVisual('bomb');
+        this.setVisual(['sand', 'bomb'].includes(this.currentVisual) ? this.currentVisual : 'sand');
       }
+    } else if (!allowed.includes(this.currentVisual)) {
+      this.setVisual(allowed[0]);
     }
 
     if (mode === 'clock') {

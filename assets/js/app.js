@@ -1272,7 +1272,7 @@ class ZenFlipClock {
       } else {
         this.startStopwatch();
       }
-    } else if (['pomodoro', 'slowlife', 'cyber'].includes(this.currentMode)) {
+    } else if (this.currentMode === 'countdown' || ['pomodoro', 'slowlife', 'cyber'].includes(this.currentMode)) {
       if (this.countdownIsRunning) {
         this.pauseCountdown();
       } else {
@@ -1291,7 +1291,7 @@ class ZenFlipClock {
       this.updateModeUI();
       const t = I18N[this.lang] || I18N['zh-CN'];
       document.title = t.site_title;
-    } else if (['pomodoro', 'slowlife', 'cyber'].includes(this.currentMode)) {
+    } else if (this.currentMode === 'countdown' || ['pomodoro', 'slowlife', 'cyber'].includes(this.currentMode)) {
       this.pauseCountdown();
       document.body.classList.remove('cyber-urgent');
       this.countdownRemaining = this.countdownDuration;

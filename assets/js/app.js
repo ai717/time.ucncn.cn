@@ -756,9 +756,9 @@ class ZenFlipClock {
       const hDeg = (h % 12 + m / 60) * 30;
       const mDeg = (m + s / 60) * 6;
       const sDeg = (s + ms / 1000) * 6;
-      this.pendulumHourHand.setAttribute('transform', `rotate(${hDeg.toFixed(1)} 130 115)`);
-      this.pendulumMinuteHand.setAttribute('transform', `rotate(${mDeg.toFixed(1)} 130 115)`);
-      this.pendulumSecondHand.setAttribute('transform', `rotate(${sDeg.toFixed(1)} 130 115)`);
+      this.pendulumHourHand.setAttribute('transform', `rotate(${hDeg.toFixed(1)})`);
+      this.pendulumMinuteHand.setAttribute('transform', `rotate(${mDeg.toFixed(1)})`);
+      this.pendulumSecondHand.setAttribute('transform', `rotate(${sDeg.toFixed(1)})`);
     }
     if (this.pendulumReadout) {
       this.pendulumReadout.textContent = timeStr;

@@ -281,16 +281,20 @@
           <rect x="52" y="196" width="156" height="196" rx="9" fill="rgba(0,0,0,0.5)" />
 
           <!-- 3. Swinging Brass Pendulum (Pivot at 130, 115) -->
-          <g id="pendulum-arm" class="pendulum-swing-group">
-            <!-- Brass Pendulum Rod -->
-            <line x1="130" y1="188" x2="130" y2="340" stroke="url(#pendulum-brass-grad)" stroke-width="4" stroke-linecap="round" />
-            <!-- Heavy Mirror-Polished Brass Bob -->
-            <circle class="pendulum-bob" cx="130" cy="336" r="26" fill="url(#pendulum-bob-grad)" stroke="#78531d" stroke-width="2" />
-            <!-- Decorative Inner Bob Rings -->
-            <circle cx="130" cy="336" r="17" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" />
-            <circle cx="130" cy="336" r="6" fill="#78531d" />
-            <!-- Bottom Rating Nut (调速螺母) -->
-            <polygon points="126,362 134,362 132,374 128,374" fill="url(#pendulum-brass-grad)" stroke="#451a03" stroke-width="0.8" />
+          <g transform="translate(130, 115)">
+            <g id="pendulum-arm" class="pendulum-swing-group">
+              <!-- Suspension Block -->
+              <rect x="-5" y="69" width="10" height="7" rx="1.5" fill="url(#pendulum-brass-grad)" stroke="#451a03" stroke-width="0.8" />
+              <!-- Solid Brass Pendulum Rod (Guaranteed visible in all SVG engines) -->
+              <rect x="-2" y="72" width="4" height="150" rx="2" fill="url(#pendulum-brass-grad)" stroke="#78531d" stroke-width="0.6" />
+              <!-- Heavy Mirror-Polished Brass Bob -->
+              <circle class="pendulum-bob" cx="0" cy="221" r="26" fill="url(#pendulum-bob-grad)" stroke="#78531d" stroke-width="2" />
+              <!-- Decorative Inner Bob Rings -->
+              <circle cx="0" cy="221" r="17" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" />
+              <circle cx="0" cy="221" r="6" fill="#78531d" />
+              <!-- Bottom Rating Nut (调速螺母) -->
+              <polygon points="-4,247 4,247 2,259 -2,259" fill="url(#pendulum-brass-grad)" stroke="#451a03" stroke-width="0.8" />
+            </g>
           </g>
 
           <!-- Glass Chamber Specular Reflection Overlay -->
@@ -320,31 +324,33 @@
           <circle cx="82" cy="89" r="2.2" class="pendulum-dot" />
           <circle cx="103" cy="69" r="2.2" class="pendulum-dot" />
 
-          <!-- Center Pivot Assembly -->
-          <!-- Hour Hand (Breguet spade hand) -->
-          <g id="pendulum-hour-hand" class="pendulum-hand hour-hand">
-            <line x1="130" y1="115" x2="130" y2="76" stroke="#fef08a" stroke-width="3.5" stroke-linecap="round" />
-            <circle cx="130" cy="84" r="4.2" fill="#fef08a" />
-            <line x1="130" y1="115" x2="130" y2="126" stroke="#fef08a" stroke-width="2.2" />
-          </g>
+          <!-- 5. Center Pivot Assembly & Clock Hands (Pivot at 130, 115) -->
+          <g transform="translate(130, 115)">
+            <!-- Hour Hand (Breguet spade hand) -->
+            <g id="pendulum-hour-hand" class="pendulum-hand hour-hand">
+              <line x1="0" y1="0" x2="0" y2="-40" stroke="#fef08a" stroke-width="3.6" stroke-linecap="round" />
+              <circle cx="0" cy="-31" r="4.2" fill="#fef08a" stroke="#78350f" stroke-width="0.8" />
+              <line x1="0" y1="0" x2="0" y2="12" stroke="#fef08a" stroke-width="2.2" />
+            </g>
 
-          <!-- Minute Hand (Long pointer hand) -->
-          <g id="pendulum-minute-hand" class="pendulum-hand minute-hand">
-            <line x1="130" y1="115" x2="130" y2="58" stroke="#fef08a" stroke-width="2.4" stroke-linecap="round" />
-            <circle cx="130" cy="67" r="3.2" fill="#fef08a" />
-            <line x1="130" y1="115" x2="130" y2="128" stroke="#fef08a" stroke-width="1.8" />
-          </g>
+            <!-- Minute Hand (Long pointer hand) -->
+            <g id="pendulum-minute-hand" class="pendulum-hand minute-hand">
+              <line x1="0" y1="0" x2="0" y2="-58" stroke="#fef08a" stroke-width="2.5" stroke-linecap="round" />
+              <circle cx="0" cy="-48" r="3.2" fill="#fef08a" stroke="#78350f" stroke-width="0.6" />
+              <line x1="0" y1="0" x2="0" y2="14" stroke="#fef08a" stroke-width="1.8" />
+            </g>
 
-          <!-- Second Hand (Slender red needle with counterpoise) -->
-          <g id="pendulum-second-hand" class="pendulum-hand second-hand">
-            <line x1="130" y1="115" x2="130" y2="50" stroke="#ef4444" stroke-width="1.4" stroke-linecap="round" />
-            <circle cx="130" cy="115" r="3" fill="#ef4444" />
-            <line x1="130" y1="115" x2="130" y2="134" stroke="#ef4444" stroke-width="1.8" />
-            <circle cx="130" cy="134" r="2.5" fill="#ef4444" />
-          </g>
+            <!-- Second Hand (Slender red needle with counterpoise) -->
+            <g id="pendulum-second-hand" class="pendulum-hand second-hand">
+              <line x1="0" y1="0" x2="0" y2="-65" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" />
+              <circle cx="0" cy="0" r="3" fill="#ef4444" />
+              <line x1="0" y1="0" x2="0" y2="18" stroke="#ef4444" stroke-width="1.8" />
+              <circle cx="0" cy="18" r="2.5" fill="#ef4444" />
+            </g>
 
-          <!-- Brass Pivot Cap -->
-          <circle cx="130" cy="115" r="4.5" fill="url(#pendulum-brass-grad)" stroke="#451a03" stroke-width="0.8" />
+            <!-- Center Brass Pivot Cap -->
+            <circle cx="0" cy="0" r="4.5" fill="url(#pendulum-brass-grad)" stroke="#451a03" stroke-width="0.8" />
+          </g>
         </svg>
 
         <!-- Digital Readout Below Clock Base -->

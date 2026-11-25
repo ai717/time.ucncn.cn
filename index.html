@@ -316,31 +316,25 @@
         <div id="date-sub" class="date-sub">专注此时此刻 · 让工位静下来</div>
       </div>
 
-      <!-- Mode Selector (5 Modes) -->
-      <nav class="modes-bar" aria-label="专注模式切换">
+      <!-- Mode Selector (3 Main Categories: 实时时钟 / 专注秒钟 / 倒计时) -->
+      <nav class="modes-bar" aria-label="核心模式切换">
         <button class="mode-btn active" data-mode="clock" id="mode-clock">
           <span>🕒</span> <span data-i18n="mode_clock">实时时钟</span>
         </button>
-        <button class="mode-btn" data-mode="pomodoro" id="mode-pomodoro">
-          <span>🍅</span> <span data-i18n="mode_pomodoro">番茄自习</span>
-        </button>
         <button class="mode-btn" data-mode="stopwatch" id="mode-stopwatch">
-          <span>⏱️</span> <span data-i18n="mode_stopwatch">专注秒表</span>
+          <span>⏱️</span> <span data-i18n="mode_stopwatch">专注秒钟</span>
         </button>
-        <button class="mode-btn" data-mode="slowlife" id="mode-slowlife">
-          <span>🍳</span> <span data-i18n="mode_slowlife">慢生活</span>
-        </button>
-        <button class="mode-btn" data-mode="cyber" id="mode-cyber">
-          <span>⚡</span> <span data-i18n="mode_cyber">赛博冲刺</span>
+        <button class="mode-btn" data-mode="countdown" id="mode-countdown">
+          <span>⏳</span> <span data-i18n="mode_countdown">倒计时</span>
         </button>
       </nav>
 
-      <!-- Timer Action Bar (for Pomodoro, Stopwatch, Slowlife, Cyber) -->
+      <!-- Timer Action Bar (for Stopwatch & Countdown) -->
       <div class="timer-action-bar" id="timer-action-bar" style="display: none;">
         <!-- Primary Action Button -->
         <button id="btn-timer-toggle" class="btn-timer-primary">
           <span id="timer-toggle-icon">▶</span>
-          <span id="timer-toggle-label">开始专注</span>
+          <span id="timer-toggle-label">开始计时</span>
         </button>
 
         <!-- Reset Button -->
@@ -361,52 +355,51 @@
           <span id="pacing-toggle-label">控时灯</span>
         </button>
 
-        <!-- 1. Pomodoro Presets -->
-        <div class="pomo-presets" id="pomo-presets">
-          <button class="btn-timer-pill active" data-pomo-type="work" data-minutes="25">
-            🍅 25m
-          </button>
-          <button class="btn-timer-pill" data-pomo-type="shortBreak" data-minutes="5">
-            ☕ 5m
-          </button>
-          <button class="btn-timer-pill" data-pomo-type="longBreak" data-minutes="15">
-            🍵 15m
-          </button>
-        </div>
-
-        <!-- 2. Slow Life Presets (Eggs & Coffee) -->
-        <div class="pomo-presets" id="slowlife-presets" style="display: none;">
-          <button class="btn-timer-pill active" data-slowlife-type="egg6" data-minutes="6">
-            🍳 6m 溏心蛋
-          </button>
-          <button class="btn-timer-pill" data-slowlife-type="egg8" data-minutes="8">
-            🥚 8m 软心蛋
-          </button>
-          <button class="btn-timer-pill" data-slowlife-type="egg10" data-minutes="10">
-            🍳 10m 全熟蛋
-          </button>
-          <button class="btn-timer-pill" data-slowlife-type="coffee" data-minutes="3">
-            ☕ 3m 手冲咖啡
-          </button>
-          <button class="btn-timer-pill" data-slowlife-type="tea" data-minutes="4">
-            🍵 4m 工夫茶
+        <!-- Countdown Presets & Custom Trigger -->
+        <div class="pomo-presets" id="countdown-presets" style="display: none;">
+          <button class="btn-timer-pill" data-minutes="5">5m</button>
+          <button class="btn-timer-pill" data-minutes="10">10m</button>
+          <button class="btn-timer-pill" data-minutes="15">15m</button>
+          <button class="btn-timer-pill active" data-minutes="25">25m</button>
+          <button class="btn-timer-pill" data-minutes="45">45m</button>
+          <button class="btn-timer-pill" data-minutes="60">60m</button>
+          <button class="btn-timer-pill btn-custom-trigger" id="btn-custom-trigger" title="自定义时分秒">
+            <span>⚙️</span> <span data-i18n="custom_time_btn">自定义</span>
           </button>
         </div>
+      </div>
 
-        <!-- 3. Cyber Defuse Presets -->
-        <div class="pomo-presets" id="cyber-presets" style="display: none;">
-          <button class="btn-timer-pill active" data-cyber-type="cyber1" data-minutes="1">
-            ⚡ 1m 闪击
-          </button>
-          <button class="btn-timer-pill" data-cyber-type="cyber3" data-minutes="3">
-            ⚡ 3m 冲刺
-          </button>
-          <button class="btn-timer-pill" data-cyber-type="cyber5" data-minutes="5">
-            ⚡ 5m 极限
-          </button>
-          <button class="btn-timer-pill" data-cyber-type="cyber10" data-minutes="10">
-            ⚡ 10m DDL
-          </button>
+      <!-- Custom Countdown Time Picker Panel -->
+      <div class="custom-time-panel" id="custom-time-panel" style="display: none;">
+        <div class="custom-time-header">
+          <span class="custom-time-title" data-i18n="custom_time_title">设定自定义倒计时</span>
+          <button class="btn-close-panel" id="btn-close-custom" title="关闭面板">✕</button>
+        </div>
+        <div class="custom-time-inputs">
+          <div class="time-input-group">
+            <label data-i18n="time_hours">时</label>
+            <input type="number" id="input-custom-hours" min="0" max="99" value="0" />
+          </div>
+          <span class="custom-time-sep">:</span>
+          <div class="time-input-group">
+            <label data-i18n="time_minutes">分</label>
+            <input type="number" id="input-custom-minutes" min="0" max="59" value="25" />
+          </div>
+          <span class="custom-time-sep">:</span>
+          <div class="time-input-group">
+            <label data-i18n="time_seconds">秒</label>
+            <input type="number" id="input-custom-seconds" min="0" max="59" value="0" />
+          </div>
+        </div>
+        <div class="custom-time-quick-chips">
+          <button class="quick-chip" data-add-sec="60">+1分</button>
+          <button class="quick-chip" data-add-sec="300">+5分</button>
+          <button class="quick-chip" data-add-sec="600">+10分</button>
+          <button class="quick-chip" data-add-sec="1800">+30分</button>
+          <button class="quick-chip chip-clear" id="btn-quick-clear">清零</button>
+        </div>
+        <div class="custom-time-actions">
+          <button class="btn-apply-custom" id="btn-apply-custom" data-i18n="custom_apply">确认并载入</button>
         </div>
       </div>
 
@@ -419,24 +412,24 @@
         <div class="lap-list" id="lap-list"></div>
       </div>
 
-      <!-- Ambient Sound Mixer & Screen Wake Lock Ribbon -->
-      <div class="ambient-bar" id="ambient-bar">
-        <div class="ambient-pill" data-sound="rain" title="窗外细雨">
-          <span class="ambient-icon">🌧️</span>
-          <span class="ambient-name" data-i18n="sound_rain">细雨</span>
-        </div>
-        <div class="ambient-pill" data-sound="fireplace" title="温暖壁炉">
-          <span class="ambient-icon">🔥</span>
-          <span class="ambient-name" data-i18n="sound_fireplace">壁炉</span>
-        </div>
-        <div class="ambient-pill" data-sound="cafe" title="街角咖啡">
-          <span class="ambient-icon">☕</span>
-          <span class="ambient-name" data-i18n="sound_cafe">咖啡馆</span>
-        </div>
-        <div class="ambient-pill" data-sound="clock" title="机械钟摆">
-          <span class="ambient-icon">⏱️</span>
-          <span class="ambient-name" data-i18n="sound_clock">钟摆</span>
-        </div>
+      <!-- Clock Ticking Sound Selector (Pure Clock Simulation) & Screen Wake Lock -->
+      <div class="clock-sound-bar" id="clock-sound-bar" aria-label="秒针模拟音">
+        <span class="sound-bar-label" data-i18n="sound_label">秒针音:</span>
+        <button class="sound-pill active" data-tick="mute" title="静音">
+          <span>🔇</span> <span data-i18n="tick_mute">静音</span>
+        </button>
+        <button class="sound-pill" data-tick="mechanical" title="经典机械发条擒纵齿轮音">
+          <span>⚙️</span> <span data-i18n="tick_mechanical">机械发条</span>
+        </button>
+        <button class="sound-pill" data-tick="quartz" title="现代高精度石英指针步进音">
+          <span>⚡</span> <span data-i18n="tick_quartz">石英脉冲</span>
+        </button>
+        <button class="sound-pill" data-tick="pendulum" title="沉稳复古落地大摆钟">
+          <span>🪵</span> <span data-i18n="tick_pendulum">复古摆钟</span>
+        </button>
+        <button class="sound-pill" data-tick="chrono" title="金属精密秒表双跳击响">
+          <span>⏱️</span> <span data-i18n="tick_chrono">精密秒表</span>
+        </button>
         <button id="btn-wakelock" class="wakelock-pill active" title="点击开关防息屏 (Keep Screen On)">
           <span class="wakelock-icon">🔒</span>
           <span id="wakelock-label">防息屏</span>

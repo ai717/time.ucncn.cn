@@ -1,22 +1,16 @@
 /**
- * ZenFlip Clock - Ambient Audio Engine (Web Audio API)
- * Procedural lossless audio synthesis for rain, fireplace, cafe ambience & ticking
- * Zero network dependencies, zero 404s, infinite seamless loop.
+ * ZenFlip Clock - Clock Tick Audio Synthesis Engine (Web Audio API)
+ * Pure procedural synthesis for authentic mechanical, quartz, pendulum, and chronometer ticks.
+ * Zero external audio files, zero network dependencies, sample-accurate timing.
  */
 
-class AmbientAudioEngine {
+class ClockTickAudioEngine {
   constructor() {
     this.ctx = null;
     this.masterGain = null;
-    this.isMuted = false;
-
-    // Track states
-    this.tracks = {
-      rain: { active: false, volume: 0.6, gainNode: null, sourceNodes: [] },
-      fireplace: { active: false, volume: 0.5, gainNode: null, sourceNodes: [], timer: null },
-      cafe: { active: false, volume: 0.4, gainNode: null, sourceNodes: [] },
-      clock: { active: false, volume: 0.4, gainNode: null, timer: null, isHigh: false }
-    };
+    this.currentTick = localStorage.getItem('zenflip_tick_sound') || 'mute';
+    this.volume = parseFloat(localStorage.getItem('zenflip_tick_vol')) || 0.6;
+    this.isTickHigh = false; // Alternating tick-tock flag
   }
 
   ensureContext() {
@@ -24,7 +18,7 @@ class AmbientAudioEngine {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       this.ctx = new AudioCtx();
       this.masterGain = this.ctx.createGain();
-      this.masterGain.gain.setValueAtTime(0.8, this.ctx.currentTime);
+      this.masterGain.gain.setValueAtTime(this.volume, this.ctx.currentTime);
       this.masterGain.connect(this.ctx.destination);
     }
     if (this.ctx.state === 'suspended') {
@@ -32,369 +26,288 @@ class AmbientAudioEngine {
     }
   }
 
-  // Generate pink noise buffer for rain & ambience
-  createPinkNoiseBuffer(durationSec = 5) {
-    const bufferSize = this.ctx.sampleRate * durationSec;
-    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-
-    for (let i = 0; i < bufferSize; i++) {
-      const white = Math.random() * 2 - 1;
-      b0 = 0.99886 * b0 + white * 0.0555179;
-      b1 = 0.99332 * b1 + white * 0.0750759;
-      b2 = 0.96900 * b2 + white * 0.1538520;
-      b3 = 0.86650 * b3 + white * 0.3104856;
-      b4 = 0.55000 * b4 + white * 0.5329522;
-      b5 = -0.7616 * b5 - white * 0.0168980;
-      data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.08;
-      b6 = white * 0.115926;
+  setTickSound(tickType) {
+    this.currentTick = tickType;
+    localStorage.setItem('zenflip_tick_sound', tickType);
+    if (tickType !== 'mute') {
+      this.ensureContext();
+      // Play an instant test tick so user gets auditory feedback
+      this.playTick();
     }
-    return buffer;
   }
 
-  // Generate brown noise buffer for deep fireplace rumbles
-  createBrownNoiseBuffer(durationSec = 5) {
-    const bufferSize = this.ctx.sampleRate * durationSec;
-    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    let lastOut = 0.0;
-
-    for (let i = 0; i < bufferSize; i++) {
-      const white = Math.random() * 2 - 1;
-      data[i] = (lastOut + (0.02 * white)) / 1.02;
-      lastOut = data[i];
-      data[i] *= 2.5; // Gain compensation
+  setVolume(val) {
+    this.volume = Math.max(0, Math.min(1, val));
+    localStorage.setItem('zenflip_tick_vol', this.volume);
+    if (this.masterGain && this.ctx) {
+      this.masterGain.gain.setValueAtTime(this.volume, this.ctx.currentTime);
     }
-    return buffer;
   }
 
-  // ================= 1. Rain Synthesizer =================
-  startRain() {
+  /**
+   * Main tick entry point: called on every second change
+   */
+  playTick() {
+    if (this.currentTick === 'mute') return;
     this.ensureContext();
-    const track = this.tracks.rain;
-    track.gainNode = this.ctx.createGain();
-    track.gainNode.gain.setValueAtTime(track.volume, this.ctx.currentTime);
-    track.gainNode.connect(this.masterGain);
 
-    // Pink noise buffer
-    const bufferSource = this.ctx.createBufferSource();
-    bufferSource.buffer = this.createPinkNoiseBuffer(6);
-    bufferSource.loop = true;
+    this.isTickHigh = !this.isTickHigh;
 
-    // Bandpass filter for soothing rain tone
-    const filter = this.ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.setValueAtTime(1400, this.ctx.currentTime);
-    filter.Q.setValueAtTime(0.7, this.ctx.currentTime);
-
-    // Highpass filter to eliminate mud
-    const hpFilter = this.ctx.createBiquadFilter();
-    hpFilter.type = 'highpass';
-    hpFilter.frequency.setValueAtTime(400, this.ctx.currentTime);
-
-    bufferSource.connect(filter);
-    filter.connect(hpFilter);
-    hpFilter.connect(track.gainNode);
-
-    bufferSource.start(0);
-    track.sourceNodes = [bufferSource, filter, hpFilter];
-    track.active = true;
+    switch (this.currentTick) {
+      case 'mechanical':
+        this.playMechanicalTick(this.isTickHigh);
+        break;
+      case 'quartz':
+        this.playQuartzTick();
+        break;
+      case 'pendulum':
+        this.playPendulumTick(this.isTickHigh);
+        break;
+      case 'chrono':
+        this.playChronoTick();
+        break;
+      default:
+        break;
+    }
   }
 
-  stopRain() {
-    const track = this.tracks.rain;
-    track.sourceNodes.forEach(node => {
-      try {
-        if (node.stop) node.stop();
-        node.disconnect();
-      } catch (e) {}
-    });
-    track.sourceNodes = [];
-    track.active = false;
-  }
-
-  // ================= 2. Fireplace Synthesizer =================
-  startFireplace() {
-    this.ensureContext();
-    const track = this.tracks.fireplace;
-    track.gainNode = this.ctx.createGain();
-    track.gainNode.gain.setValueAtTime(track.volume, this.ctx.currentTime);
-    track.gainNode.connect(this.masterGain);
-
-    // Low roar background
-    const roarSource = this.ctx.createBufferSource();
-    roarSource.buffer = this.createBrownNoiseBuffer(6);
-    roarSource.loop = true;
-
-    const roarFilter = this.ctx.createBiquadFilter();
-    roarFilter.type = 'lowpass';
-    roarFilter.frequency.setValueAtTime(260, this.ctx.currentTime);
-
-    roarSource.connect(roarFilter);
-    roarFilter.connect(track.gainNode);
-    roarSource.start(0);
-
-    track.sourceNodes = [roarSource, roarFilter];
-    track.active = true;
-
-    // Random crackle generator
-    const scheduleCrackle = () => {
-      if (!track.active) return;
-      this.playCrackle(track.gainNode);
-      const nextDelay = 80 + Math.random() * 450;
-      track.timer = setTimeout(scheduleCrackle, nextDelay);
-    };
-    scheduleCrackle();
-  }
-
-  playCrackle(destNode) {
-    if (!this.ctx || !destNode) return;
+  /**
+   * 1. 经典机械齿轮发条擒纵系统 (Mechanical Escapement)
+   * 双频谐振：Tick (高音) 与 Tock (低音) 交替，带细微金属回弹
+   */
+  playMechanicalTick(isHigh) {
     const now = this.ctx.currentTime;
+    const baseFreq = isHigh ? 2200 : 1650;
+    const bodyFreq = isHigh ? 780 : 620;
+
+    // Metal escapement tooth strike (oscillator with fast pitch sweep)
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
-    const filter = this.ctx.createBiquadFilter();
 
-    // Sharp burst
     osc.type = 'triangle';
-    osc.frequency.setValueAtTime(600 + Math.random() * 2400, now);
-
-    filter.type = 'bandpass';
-    filter.frequency.setValueAtTime(1800 + Math.random() * 2200, now);
-    filter.Q.setValueAtTime(4.0, now);
-
-    const crackleVol = 0.08 + Math.random() * 0.25;
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(crackleVol, now + 0.005);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.045);
-
-    osc.connect(filter);
-    filter.connect(gain);
-    gain.connect(destNode);
-
-    osc.start(now);
-    osc.stop(now + 0.05);
-  }
-
-  stopFireplace() {
-    const track = this.tracks.fireplace;
-    clearTimeout(track.timer);
-    track.sourceNodes.forEach(node => {
-      try {
-        if (node.stop) node.stop();
-        node.disconnect();
-      } catch (e) {}
-    });
-    track.sourceNodes = [];
-    track.active = false;
-  }
-
-  // ================= 3. Cafe Ambience Synthesizer =================
-  startCafe() {
-    this.ensureContext();
-    const track = this.tracks.cafe;
-    track.gainNode = this.ctx.createGain();
-    track.gainNode.gain.setValueAtTime(track.volume, this.ctx.currentTime);
-    track.gainNode.connect(this.masterGain);
-
-    // Warm room chatter murmur simulation using dual formant filters
-    const pinkSource = this.ctx.createBufferSource();
-    pinkSource.buffer = this.createPinkNoiseBuffer(6);
-    pinkSource.loop = true;
-
-    const f1 = this.ctx.createBiquadFilter();
-    f1.type = 'bandpass';
-    f1.frequency.setValueAtTime(480, this.ctx.currentTime);
-    f1.Q.setValueAtTime(2.5, this.ctx.currentTime);
-
-    const f2 = this.ctx.createBiquadFilter();
-    f2.type = 'bandpass';
-    f2.frequency.setValueAtTime(1100, this.ctx.currentTime);
-    f2.Q.setValueAtTime(3.0, this.ctx.currentTime);
-
-    pinkSource.connect(f1);
-    pinkSource.connect(f2);
-    f1.connect(track.gainNode);
-    f2.connect(track.gainNode);
-    pinkSource.start(0);
-
-    track.sourceNodes = [pinkSource, f1, f2];
-    track.active = true;
-  }
-
-  stopCafe() {
-    const track = this.tracks.cafe;
-    track.sourceNodes.forEach(node => {
-      try {
-        if (node.stop) node.stop();
-        node.disconnect();
-      } catch (e) {}
-    });
-    track.sourceNodes = [];
-    track.active = false;
-  }
-
-  // ================= 4. Mechanical Clock Ticking =================
-  startClockTick() {
-    this.ensureContext();
-    const track = this.tracks.clock;
-    track.gainNode = this.ctx.createGain();
-    track.gainNode.gain.setValueAtTime(track.volume, this.ctx.currentTime);
-    track.gainNode.connect(this.masterGain);
-    track.active = true;
-
-    const tickLoop = () => {
-      if (!track.active) return;
-      this.playTick(track.isHigh, track.gainNode);
-      track.isHigh = !track.isHigh;
-      track.timer = setTimeout(tickLoop, 1000);
-    };
-    tickLoop();
-  }
-
-  playTick(isHigh, destNode) {
-    if (!this.ctx || !destNode) return;
-    const now = this.ctx.currentTime;
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
-    const filter = this.ctx.createBiquadFilter();
-
-    // Wood/metal mechanical escapement click
-    const freq = isHigh ? 1320 : 1080;
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(freq, now);
-
-    filter.type = 'bandpass';
-    filter.frequency.setValueAtTime(freq, now);
-    filter.Q.setValueAtTime(8, now);
+    osc.frequency.setValueAtTime(baseFreq, now);
+    osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.4, now + 0.025);
 
     gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(0.25, now + 0.003);
+    gain.gain.linearRampToValueAtTime(0.42 * this.volume, now + 0.001);
     gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
-
-    osc.connect(filter);
-    filter.connect(gain);
-    gain.connect(destNode);
-
-    osc.start(now);
-    osc.stop(now + 0.04);
-  }
-
-  stopClockTick() {
-    const track = this.tracks.clock;
-    clearTimeout(track.timer);
-    track.active = false;
-  }
-
-  // ================= Control Interfaces =================
-  toggleTrack(trackName) {
-    const track = this.tracks[trackName];
-    if (!track) return false;
-
-    if (track.active) {
-      if (trackName === 'rain') this.stopRain();
-      else if (trackName === 'fireplace') this.stopFireplace();
-      else if (trackName === 'cafe') this.stopCafe();
-      else if (trackName === 'clock') this.stopClockTick();
-      return false;
-    } else {
-      if (trackName === 'rain') this.startRain();
-      else if (trackName === 'fireplace') this.startFireplace();
-      else if (trackName === 'cafe') this.startCafe();
-      else if (trackName === 'clock') this.startClockTick();
-      return true;
-    }
-  }
-
-  setTrackVolume(trackName, volume0to1) {
-    const track = this.tracks[trackName];
-    if (!track) return;
-    track.volume = Math.max(0, Math.min(1, volume0to1));
-    if (track.gainNode && this.ctx) {
-      track.gainNode.gain.setValueAtTime(track.volume, this.ctx.currentTime);
-    }
-  }
-
-  // ================= Procedural Special Sound Effects =================
-  // 1. Tense Heartbeat for Cyber Defuse Countdown (last 10s)
-  playHeartbeat() {
-    this.ensureContext();
-    const now = this.ctx.currentTime;
-
-    const playThump = (timeOffset, freq, vol) => {
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, now + timeOffset);
-      osc.frequency.exponentialRampToValueAtTime(35, now + timeOffset + 0.12);
-
-      gain.gain.setValueAtTime(0.0001, now + timeOffset);
-      gain.gain.exponentialRampToValueAtTime(vol, now + timeOffset + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + timeOffset + 0.15);
-
-      osc.connect(gain);
-      gain.connect(this.masterGain);
-
-      osc.start(now + timeOffset);
-      osc.stop(now + timeOffset + 0.16);
-    };
-
-    // Double beat: "lub-dub"
-    playThump(0, 72, 0.45);
-    playThump(0.12, 58, 0.35);
-  }
-
-  // 2. Uplifting Cyber Triumph Fanfare (Defused / Mission Accomplished)
-  playDefuseSuccess() {
-    this.ensureContext();
-    const now = this.ctx.currentTime;
-    // Major 7th ascending arpeggio (C5, E5, G5, B5, C6)
-    const notes = [523.25, 659.25, 783.99, 987.77, 1046.50];
-
-    notes.forEach((freq, idx) => {
-      const noteTime = now + idx * 0.09;
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(freq, noteTime);
-
-      gain.gain.setValueAtTime(0.0001, noteTime);
-      gain.gain.exponentialRampToValueAtTime(0.28, noteTime + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.0001, noteTime + 1.2);
-
-      osc.connect(gain);
-      gain.connect(this.masterGain);
-
-      osc.start(noteTime);
-      osc.stop(noteTime + 1.3);
-    });
-  }
-
-  // 3. Gentle kitchen bubbling simmer click
-  playBoilingBubble() {
-    this.ensureContext();
-    const now = this.ctx.currentTime;
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
-
-    const startFreq = 400 + Math.random() * 500;
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(startFreq, now);
-    osc.frequency.exponentialRampToValueAtTime(startFreq + 300, now + 0.05);
-
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(0.15, now + 0.015);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
 
     osc.connect(gain);
     gain.connect(this.masterGain);
 
     osc.start(now);
-    osc.stop(now + 0.07);
+    osc.stop(now + 0.04);
+
+    // Warm wooden / metal case body resonance
+    const bodyOsc = this.ctx.createOscillator();
+    const bodyGain = this.ctx.createGain();
+
+    bodyOsc.type = 'sine';
+    bodyOsc.frequency.setValueAtTime(bodyFreq, now);
+    bodyOsc.frequency.exponentialRampToValueAtTime(bodyFreq * 0.7, now + 0.03);
+
+    bodyGain.gain.setValueAtTime(0.0001, now);
+    bodyGain.gain.linearRampToValueAtTime(0.28 * this.volume, now + 0.002);
+    bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.045);
+
+    bodyOsc.connect(bodyGain);
+    bodyGain.connect(this.masterGain);
+
+    bodyOsc.start(now);
+    bodyOsc.stop(now + 0.05);
+  }
+
+  /**
+   * 2. 现代高精度石英指针步进脉冲 (Quartz Step)
+   * 极简紧凑的高频冲击，超快瞬态衰减，轻盈现代
+   */
+  playQuartzTick() {
+    const now = this.ctx.currentTime;
+
+    // Filtered noise transient for snappy click
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.015);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.2));
+    }
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(3200, now);
+    filter.Q.setValueAtTime(2.5, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.35 * this.volume, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.015);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.masterGain);
+
+    noise.start(now);
+  }
+
+  /**
+   * 3. 沉稳复古落地大摆钟 (Grandfather Pendulum)
+   * 85Hz 重木壳低频共鸣箱体，厚重且安宁
+   */
+  playPendulumTick(isHigh) {
+    const now = this.ctx.currentTime;
+    const clickFreq = isHigh ? 1400 : 1150;
+    const woodThump = isHigh ? 95 : 82;
+
+    // Heavy low frequency wood chest thump
+    const subOsc = this.ctx.createOscillator();
+    const subGain = this.ctx.createGain();
+
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(woodThump, now);
+    subOsc.frequency.exponentialRampToValueAtTime(40, now + 0.09);
+
+    subGain.gain.setValueAtTime(0.0001, now);
+    subGain.gain.linearRampToValueAtTime(0.55 * this.volume, now + 0.003);
+    subGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
+
+    subOsc.connect(subGain);
+    subGain.connect(this.masterGain);
+
+    subOsc.start(now);
+    subOsc.stop(now + 0.12);
+
+    // Sharp escapement release click
+    const clickOsc = this.ctx.createOscillator();
+    const clickGain = this.ctx.createGain();
+
+    clickOsc.type = 'triangle';
+    clickOsc.frequency.setValueAtTime(clickFreq, now);
+
+    clickGain.gain.setValueAtTime(0.0001, now);
+    clickGain.gain.linearRampToValueAtTime(0.32 * this.volume, now + 0.001);
+    clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.03);
+
+    clickOsc.connect(clickGain);
+    clickGain.connect(this.masterGain);
+
+    clickOsc.start(now);
+    clickOsc.stop(now + 0.035);
+  }
+
+  /**
+   * 4. 金属精密秒表双击音 (Precision Chronometer)
+   * 双齿轮咬合：15ms 快速双声金属轻响 (Click-Clack)
+   */
+  playChronoTick() {
+    const now = this.ctx.currentTime;
+
+    const playClick = (timeOffset, freq, vol) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, now + timeOffset);
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.5, now + timeOffset + 0.015);
+
+      gain.gain.setValueAtTime(0.0001, now + timeOffset);
+      gain.gain.linearRampToValueAtTime(vol * this.volume, now + timeOffset + 0.001);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + timeOffset + 0.02);
+
+      osc.connect(gain);
+      gain.connect(this.masterGain);
+
+      osc.start(now + timeOffset);
+      osc.stop(now + timeOffset + 0.025);
+    };
+
+    // Double pulse: gear engagement and escapement rebound
+    playClick(0, 3600, 0.38);
+    playClick(0.014, 2800, 0.28);
+  }
+
+  /**
+   * 倒计时结束时的清脆伴学磬声 / 禅钟
+   */
+  playZenChime() {
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+    // Harmonic frequencies for bronze singing bowl / chime
+    const freqs = [587.33, 880, 1174.66, 1760]; // D5, A5, D6, A6
+
+    freqs.forEach((freq, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now);
+
+      const amp = (0.28 / (idx + 1)) * this.volume;
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.linearRampToValueAtTime(amp, now + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8);
+
+      osc.connect(gain);
+      gain.connect(this.masterGain);
+
+      osc.start(now);
+      osc.stop(now + 3.0);
+    });
+  }
+
+  /**
+   * 炸弹倒计时结束时的轰鸣爆发音效 (Procedural Explosion)
+   */
+  playExplosion() {
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Sub rumble
+    const subOsc = this.ctx.createOscillator();
+    const subGain = this.ctx.createGain();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(140, now);
+    subOsc.frequency.exponentialRampToValueAtTime(28, now + 0.6);
+
+    subGain.gain.setValueAtTime(0.0001, now);
+    subGain.gain.linearRampToValueAtTime(0.6 * this.volume, now + 0.02);
+    subGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.8);
+
+    subOsc.connect(subGain);
+    subGain.connect(this.masterGain);
+    subOsc.start(now);
+    subOsc.stop(now + 0.85);
+
+    // Blast noise burst
+    const dur = 0.5;
+    const bufferSize = Math.floor(this.ctx.sampleRate * dur);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.25));
+    }
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(800, now);
+    filter.frequency.exponentialRampToValueAtTime(150, now + dur);
+
+    const noiseGain = this.ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.55 * this.volume, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+    noise.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(this.masterGain);
+
+    noise.start(now);
   }
 }
 
-// Global Ambient Audio Instance
-window.ambientAudio = new AmbientAudioEngine();
+// Global Clock Audio Engine Instance
+window.clockAudio = new ClockTickAudioEngine();
+window.playZenBell = () => window.clockAudio.playZenChime();

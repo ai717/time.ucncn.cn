@@ -25,22 +25,18 @@ const I18N = {
 
     // Modes
     mode_clock: '实时时钟',
-    mode_pomodoro: '番茄自习',
-    mode_stopwatch: '专注秒表',
-    mode_slowlife: '慢生活',
-    mode_cyber: '赛博冲刺',
+    mode_stopwatch: '专注秒钟',
+    mode_countdown: '倒计时',
 
-    footer_tip: '💡 双击任意处或按 <span class="kbd-badge">F</span> 键进入极简全屏 · 按 <span class="kbd-badge">M</span> 切换场景',
-    footer_slogan: '沉浸专注空间',
+    footer_tip: '💡 双击任意处或按 <span class="kbd-badge">F</span> 键进入极简全屏 · 按 <span class="kbd-badge">M</span> 切换分类 · 按 <span class="kbd-badge">V</span> 切换形态',
+    footer_slogan: '专注时钟 & 倒计时',
     theme_oled: 'OLED 纯黑',
     theme_parchment: '羊皮纸白',
     theme_amber: '暖橘微光',
 
     // Timer Actions
-    btn_start_focus: '开始专注',
+    btn_start_focus: '开始计时',
     btn_start_timer: '开始计时',
-    btn_start_cook: '开始烹调',
-    btn_start_cyber: '启动协议',
     btn_pause: '暂停',
     btn_continue: '继续',
     btn_reset: '重置',
@@ -54,47 +50,32 @@ const I18N = {
     pacing_amber: '临近尾声 · 注意把握',
     pacing_red: '超时预警 · 尽快收尾',
 
-    // Sounds
-    sound_rain: '细雨',
-    sound_fireplace: '壁炉',
-    sound_cafe: '咖啡馆',
-    sound_clock: '钟摆',
+    // Clock Tick Sounds
+    sound_label: '秒针音:',
+    tick_mute: '静音',
+    tick_mechanical: '机械发条',
+    tick_quartz: '石英脉冲',
+    tick_pendulum: '复古摆钟',
+    tick_chrono: '精密秒表',
     wakelock_on: '防息屏: 开启',
     wakelock_off: '防息屏: 关闭',
 
+    // Custom Time
+    custom_time_btn: '自定义',
+    custom_time_title: '设定自定义倒计时',
+    time_hours: '时',
+    time_minutes: '分',
+    time_seconds: '秒',
+    custom_apply: '确认并载入',
+
     // Status titles
-    pomo_work_title: (m) => `🍅 番茄专注 · ${m} 分钟`,
-    pomo_short_title: (m) => `☕ 短暂休息 · ${m} 分钟`,
-    pomo_long_title: (m) => `🍵 较长休息 · ${m} 分钟`,
-    pomo_work_sub: '保持专注，屏蔽干扰',
-    pomo_break_sub: '闭目养神，喝口温水',
-    pomo_done_title: '🎉 本轮专注完成！',
-    pomo_done_sub: '伴学钟声已鸣响，开始享受休息吧',
+    countdown_title: (m) => `⏳ 倒计时 · ${m} 分钟`,
+    countdown_sub: '保持专注，享受分秒心流',
+    countdown_done_title: '🎉 倒计时已结束！',
+    countdown_done_sub: '伴学钟声已鸣响，伸个懒腰休息片刻吧',
 
-    stopwatch_title: '⏱️ 专注秒表 · 每一秒皆是积累',
-    stopwatch_sub: '巨幕演讲与大屏计时 · 保持心流状态',
-
-    // Slow Life
-    slowlife_egg6_title: '🍳 6m 温泉溏心蛋 · 科学慢煮',
-    slowlife_egg6_sub: '蛋清刚凝固，蛋黄金黄流心，柔润香浓',
-    slowlife_egg8_title: '🥚 8m 软心溏心蛋 · 慢煮计时',
-    slowlife_egg8_sub: '经典居酒屋流心拉面蛋质感，软糯不流淌',
-    slowlife_egg10_title: '🍳 10m 全熟蛋 · 慢煮计时',
-    slowlife_egg10_sub: '蛋白弹韧，蛋黄完全熟化，健身减脂首选',
-    slowlife_coffee_title: '☕ 3m 手冲咖啡 · 金杯萃取',
-    slowlife_coffee_sub: '4:6 手冲法 · 注入温柔与香气',
-    slowlife_tea_title: '🍵 4m 原叶工夫茶 · 悠然慢品',
-    slowlife_tea_sub: '茶香四溢，汤色透亮，静心小憩片刻',
-    slowlife_done_title: '🍳 烹享完成，趁热品味吧！',
-    slowlife_done_sub: '伴随清脆提壶声，享受当下的味蕾治愈',
-
-    // Cyber Defuse
-    cyber_title: (m) => `⚡ DEFUSE PROTOCOL · 剩余 ${m} 分钟`,
-    cyber_sub: '心流极限冲刺 · 全神经注意力收束中',
-    cyber_urgent_title: '⚠️ CRITICAL COUNTDOWN · 核心临界!',
-    cyber_urgent_sub: '倒数 10 秒心跳共振 · 准备完成协议',
-    cyber_done_title: '💥 MISSION ACCOMPLISHED · 协议解除!',
-    cyber_done_sub: '恭喜在极限 Deadline 前成功生还！',
+    stopwatch_title: '⏱️ 专注秒钟 · 每一秒皆是积累',
+    stopwatch_sub: '大屏精准扫秒计时 · 保持心流状态',
 
     formatDate: (date) => {
       const year = date.getFullYear();
@@ -125,23 +106,19 @@ const I18N = {
     visual_bomb: 'Spark Bomb',
 
     // Modes
-    mode_clock: 'Clock',
-    mode_pomodoro: 'Pomodoro',
+    mode_clock: 'Real-time Clock',
     mode_stopwatch: 'Stopwatch',
-    mode_slowlife: 'Slow Life',
-    mode_cyber: 'Cyber Defuse',
+    mode_countdown: 'Countdown',
 
-    footer_tip: '💡 Double-click or press <span class="kbd-badge">F</span> for fullscreen · <span class="kbd-badge">M</span> to switch mode',
-    footer_slogan: 'Ambient Focus Room',
+    footer_tip: '💡 Double-click or press <span class="kbd-badge">F</span> for fullscreen · <span class="kbd-badge">M</span> switch mode · <span class="kbd-badge">V</span> visual',
+    footer_slogan: 'Focus Clock & Timer',
     theme_oled: 'OLED Pure Dark',
     theme_parchment: 'Parchment White',
     theme_amber: 'Amber Glow',
 
     // Timer Actions
-    btn_start_focus: 'Start Focus',
+    btn_start_focus: 'Start',
     btn_start_timer: 'Start Timer',
-    btn_start_cook: 'Start Cook',
-    btn_start_cyber: 'Defuse Now',
     btn_pause: 'Pause',
     btn_continue: 'Resume',
     btn_reset: 'Reset',
@@ -155,29 +132,32 @@ const I18N = {
     pacing_amber: 'Approaching End · Wrap Up',
     pacing_red: 'Overtime Alert · Conclude',
 
-    // Sounds
-    sound_rain: 'Rain',
-    sound_fireplace: 'Fire',
-    sound_cafe: 'Cafe',
-    sound_clock: 'Tick',
+    // Clock Tick Sounds
+    sound_label: 'Tick Sound:',
+    tick_mute: 'Mute',
+    tick_mechanical: 'Mechanical',
+    tick_quartz: 'Quartz',
+    tick_pendulum: 'Pendulum',
+    tick_chrono: 'Chrono',
     wakelock_on: 'WakeLock: ON',
     wakelock_off: 'WakeLock: OFF',
 
+    // Custom Time
+    custom_time_btn: 'Custom',
+    custom_time_title: 'Set Custom Countdown',
+    time_hours: 'h',
+    time_minutes: 'm',
+    time_seconds: 's',
+    custom_apply: 'Apply & Load',
+
     // Status titles
-    pomo_work_title: (m) => `🍅 Pomodoro Focus · ${m}m`,
-    pomo_short_title: (m) => `☕ Short Break · ${m}m`,
-    pomo_long_title: (m) => `🍵 Long Break · ${m}m`,
-    pomo_work_sub: 'Stay focused, eliminate distractions',
-    pomo_break_sub: 'Rest your eyes, hydrate & stretch',
-    pomo_done_title: '🎉 Session Complete!',
-    pomo_done_sub: 'Zen chime played. Enjoy your well-earned break!',
+    countdown_title: (m) => `⏳ Countdown · ${m} min`,
+    countdown_sub: 'Stay focused and flow in the moment',
+    countdown_done_title: '🎉 Countdown Finished!',
+    countdown_done_sub: 'Chime has played. Take a short rest!',
 
-    stopwatch_title: '⏱️ Stopwatch & Stage Timer',
-    stopwatch_sub: 'Every second counts · Stay in deep flow',
-
-    // Slow Life
-    slowlife_egg6_title: '🍳 6m Soft-Boiled Egg · Runny Yolk',
-    slowlife_egg6_sub: 'Set white, warm runny yolk, pure culinary perfection',
+    stopwatch_title: '⏱️ Focus Stopwatch',
+    stopwatch_sub: 'High-precision sweeping second hand · Deep flow state',
     slowlife_egg8_title: '🥚 8m Medium Egg · Jammy Yolk',
     slowlife_egg8_sub: 'Classic ramen egg texture, rich and custardy',
     slowlife_egg10_title: '🍳 10m Hard-Boiled Egg',
@@ -486,21 +466,25 @@ class ZenFlipClock {
     this.btnTimerLap = document.getElementById('btn-timer-lap');
     this.timerLapLabel = document.getElementById('timer-lap-label');
 
-    // Preset Groups
-    this.pomoPresets = document.getElementById('pomo-presets');
-    this.slowlifePresets = document.getElementById('slowlife-presets');
-    this.cyberPresets = document.getElementById('cyber-presets');
-
-    this.pomoPillButtons = document.querySelectorAll('.btn-timer-pill[data-pomo-type]');
-    this.slowlifePillButtons = document.querySelectorAll('.btn-timer-pill[data-slowlife-type]');
-    this.cyberPillButtons = document.querySelectorAll('.btn-timer-pill[data-cyber-type]');
+    // Preset & Custom Countdown Elements
+    this.countdownPresets = document.getElementById('countdown-presets');
+    this.countdownPillButtons = document.querySelectorAll('#countdown-presets .btn-timer-pill:not(.btn-custom-trigger)');
+    this.btnCustomTrigger = document.getElementById('btn-custom-trigger');
+    this.customTimePanel = document.getElementById('custom-time-panel');
+    this.btnCloseCustom = document.getElementById('btn-close-custom');
+    this.inputCustomHours = document.getElementById('input-custom-hours');
+    this.inputCustomMinutes = document.getElementById('input-custom-minutes');
+    this.inputCustomSeconds = document.getElementById('input-custom-seconds');
+    this.btnApplyCustom = document.getElementById('btn-apply-custom');
+    this.btnQuickClear = document.getElementById('btn-quick-clear');
+    this.quickChips = document.querySelectorAll('.quick-chip[data-add-sec]');
 
     this.lapContainer = document.getElementById('lap-container');
     this.lapList = document.getElementById('lap-list');
     this.btnClearLaps = document.getElementById('btn-clear-laps');
 
-    // Ambient Sound Pills
-    this.ambientPills = document.querySelectorAll('.ambient-pill');
+    // Clock Tick Sound Pills
+    this.soundPills = document.querySelectorAll('.sound-pill');
 
     // Cards
     this.cards = {
@@ -647,6 +631,12 @@ class ZenFlipClock {
       document.body.classList.remove('hide-seconds');
       this.btnSeconds.classList.add('active');
     }
+
+    // Initialize Active Clock Tick Sound Pill
+    const curTick = window.clockAudio ? window.clockAudio.currentTick : 'mute';
+    this.soundPills.forEach(pill => {
+      pill.classList.toggle('active', pill.getAttribute('data-tick') === curTick);
+    });
 
     this.setVisual(this.currentVisual);
   }
@@ -894,47 +884,109 @@ class ZenFlipClock {
       });
     }
 
-    // 1. Pomodoro Presets
-    this.pomoPillButtons.forEach(pill => {
+    // Countdown Presets
+    this.countdownPillButtons.forEach(pill => {
       pill.addEventListener('click', () => {
         const minutes = parseInt(pill.getAttribute('data-minutes'), 10);
-        const type = pill.getAttribute('data-pomo-type');
-        this.selectCountdownPreset(this.pomoPillButtons, pill, type, minutes);
+        this.countdownPillButtons.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        if (this.customTimePanel) this.customTimePanel.style.display = 'none';
+
+        this.pauseCountdown();
+        this.countdownDuration = minutes * 60;
+        this.countdownRemaining = this.countdownDuration;
+        this.updateCountdownDisplay(true);
+        this.updateProgressBar();
+        this.updateModeUI();
       });
     });
 
-    // 2. Slow Life Presets (Eggs & Coffee)
-    this.slowlifePillButtons.forEach(pill => {
-      pill.addEventListener('click', () => {
-        const minutes = parseInt(pill.getAttribute('data-minutes'), 10);
-        const type = pill.getAttribute('data-slowlife-type');
-        this.selectCountdownPreset(this.slowlifePillButtons, pill, type, minutes);
-      });
-    });
+    // Custom Time Controls
+    this.setupCustomTimeControls();
 
-    // 3. Cyber Defuse Presets
-    this.cyberPillButtons.forEach(pill => {
+    // Clock Tick Sound Pills
+    this.soundPills.forEach(pill => {
       pill.addEventListener('click', () => {
-        const minutes = parseInt(pill.getAttribute('data-minutes'), 10);
-        const type = pill.getAttribute('data-cyber-type');
-        this.selectCountdownPreset(this.cyberPillButtons, pill, type, minutes);
-      });
-    });
-
-    // Ambient Sound Pills
-    this.ambientPills.forEach(pill => {
-      pill.addEventListener('click', () => {
-        const sound = pill.getAttribute('data-sound');
-        if (window.ambientAudio) {
-          const isActive = window.ambientAudio.toggleTrack(sound);
-          if (isActive) {
-            pill.classList.add('active');
-          } else {
-            pill.classList.remove('active');
-          }
+        const tickType = pill.getAttribute('data-tick');
+        this.soundPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        if (window.clockAudio) {
+          window.clockAudio.setTickSound(tickType);
         }
       });
     });
+  }
+
+  setupCustomTimeControls() {
+    if (this.btnCustomTrigger) {
+      this.btnCustomTrigger.addEventListener('click', () => {
+        const isShown = this.customTimePanel.style.display !== 'none';
+        this.customTimePanel.style.display = isShown ? 'none' : 'flex';
+        if (!isShown) {
+          const h = Math.floor(this.countdownDuration / 3600);
+          const m = Math.floor((this.countdownDuration % 3600) / 60);
+          const s = this.countdownDuration % 60;
+          if (this.inputCustomHours) this.inputCustomHours.value = h;
+          if (this.inputCustomMinutes) this.inputCustomMinutes.value = m;
+          if (this.inputCustomSeconds) this.inputCustomSeconds.value = s;
+        }
+      });
+    }
+
+    if (this.btnCloseCustom) {
+      this.btnCloseCustom.addEventListener('click', () => {
+        this.customTimePanel.style.display = 'none';
+      });
+    }
+
+    if (this.btnQuickClear) {
+      this.btnQuickClear.addEventListener('click', () => {
+        if (this.inputCustomHours) this.inputCustomHours.value = 0;
+        if (this.inputCustomMinutes) this.inputCustomMinutes.value = 0;
+        if (this.inputCustomSeconds) this.inputCustomSeconds.value = 0;
+      });
+    }
+
+    this.quickChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const addSec = parseInt(chip.getAttribute('data-add-sec'), 10) || 0;
+        let curH = parseInt(this.inputCustomHours.value, 10) || 0;
+        let curM = parseInt(this.inputCustomMinutes.value, 10) || 0;
+        let curS = parseInt(this.inputCustomSeconds.value, 10) || 0;
+        let total = curH * 3600 + curM * 60 + curS + addSec;
+
+        const newH = Math.floor(total / 3600);
+        const newM = Math.floor((total % 3600) / 60);
+        const newS = total % 60;
+
+        if (this.inputCustomHours) this.inputCustomHours.value = newH;
+        if (this.inputCustomMinutes) this.inputCustomMinutes.value = newM;
+        if (this.inputCustomSeconds) this.inputCustomSeconds.value = newS;
+      });
+    });
+
+    if (this.btnApplyCustom) {
+      this.btnApplyCustom.addEventListener('click', () => {
+        const h = Math.max(0, parseInt(this.inputCustomHours.value, 10) || 0);
+        const m = Math.max(0, Math.min(59, parseInt(this.inputCustomMinutes.value, 10) || 0));
+        const s = Math.max(0, Math.min(59, parseInt(this.inputCustomSeconds.value, 10) || 0));
+        const total = h * 3600 + m * 60 + s;
+
+        if (total <= 0) return;
+
+        this.pauseCountdown();
+        this.countdownDuration = total;
+        this.countdownRemaining = total;
+
+        // Deselect presets
+        this.countdownPillButtons.forEach(p => p.classList.remove('active'));
+
+        this.customTimePanel.style.display = 'none';
+        this.updateCountdownDisplay(false);
+        this.updateProgressBar();
+        this.updateModeUI();
+      });
+    }
   }
 
   toggleFullscreen() {
@@ -951,25 +1003,19 @@ class ZenFlipClock {
   }
 
   cycleMode() {
-    const modes = ['clock', 'pomodoro', 'stopwatch', 'slowlife', 'cyber'];
+    const modes = ['clock', 'stopwatch', 'countdown'];
     const idx = modes.indexOf(this.currentMode);
     const nextMode = modes[(idx + 1) % modes.length];
     this.setMode(nextMode);
   }
 
   // ================= Mode Switching Machine =================
-  setMode(mode) {
+  setMode(mode, autoMatchVisual = true) {
     if (this.currentMode === mode) return;
     this.currentMode = mode;
 
-    document.body.classList.remove('mode-cyber', 'cyber-urgent');
-
     this.modeButtons.forEach(btn => {
-      if (btn.getAttribute('data-mode') === mode) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
+      btn.classList.toggle('active', btn.getAttribute('data-mode') === mode);
     });
 
     this.stopClock();
@@ -978,14 +1024,24 @@ class ZenFlipClock {
 
     // Default element displays
     this.timerActionBar.style.display = 'none';
-    this.pomoPresets.style.display = 'none';
-    this.slowlifePresets.style.display = 'none';
-    this.cyberPresets.style.display = 'none';
+    if (this.countdownPresets) this.countdownPresets.style.display = 'none';
+    if (this.customTimePanel) this.customTimePanel.style.display = 'none';
     this.btnTimerLap.style.display = 'none';
     this.btnPacingToggle.style.display = 'none';
     this.lapContainer.style.display = 'none';
     this.timeProgressBar.style.display = 'none';
     this.pacingBadge.style.display = 'none';
+
+    // Auto-match appropriate visual representation for the mode
+    if (autoMatchVisual) {
+      if (mode === 'clock') {
+        this.setVisual('flip');
+      } else if (mode === 'stopwatch') {
+        this.setVisual('dial');
+      } else if (mode === 'countdown') {
+        this.setVisual('bomb');
+      }
+    }
 
     if (mode === 'clock') {
       if (this.meridiemBadge && this.is12Hour) {
@@ -996,19 +1052,10 @@ class ZenFlipClock {
       if (this.meridiemBadge) this.meridiemBadge.style.display = 'none';
       this.timerActionBar.style.display = 'flex';
 
-      if (mode === 'pomodoro') {
-        this.pomoPresets.style.display = 'flex';
+      if (mode === 'countdown') {
+        this.countdownPresets.style.display = 'flex';
         this.timeProgressBar.style.display = 'block';
-        this.selectDefaultPreset(this.pomoPillButtons, 'work', 25);
-      } else if (mode === 'slowlife') {
-        this.slowlifePresets.style.display = 'flex';
-        this.timeProgressBar.style.display = 'block';
-        this.selectDefaultPreset(this.slowlifePillButtons, 'egg6', 6);
-      } else if (mode === 'cyber') {
-        document.body.classList.add('mode-cyber');
-        this.cyberPresets.style.display = 'flex';
-        this.timeProgressBar.style.display = 'block';
-        this.selectDefaultPreset(this.cyberPillButtons, 'cyber5', 5);
+        this.updateCountdownDisplay(false);
       } else if (mode === 'stopwatch') {
         this.btnTimerLap.style.display = 'inline-flex';
         this.btnPacingToggle.style.display = 'inline-flex';
@@ -1019,83 +1066,16 @@ class ZenFlipClock {
     }
   }
 
-  selectDefaultPreset(pillGroup, type, minutes) {
-    pillGroup.forEach(p => {
-      const isMatch = p.getAttribute('data-pomo-type') === type ||
-                      p.getAttribute('data-slowlife-type') === type ||
-                      p.getAttribute('data-cyber-type') === type;
-      p.classList.toggle('active', isMatch);
-    });
-    this.countdownType = type;
-    this.countdownDuration = minutes * 60;
-    this.countdownRemaining = this.countdownDuration;
-    this.updateCountdownDisplay(false);
-    this.updateProgressBar();
-  }
-
-  selectCountdownPreset(pillGroup, clickedPill, type, minutes) {
-    this.pauseCountdown();
-    this.countdownType = type;
-    this.countdownDuration = minutes * 60;
-    this.countdownRemaining = this.countdownDuration;
-
-    pillGroup.forEach(pill => pill.classList.remove('active'));
-    clickedPill.classList.add('active');
-
-    this.updateCountdownDisplay(true);
-    this.updateProgressBar();
-    this.updateModeUI();
-  }
-
   updateModeUI() {
     const t = I18N[this.lang] || I18N['zh-CN'];
 
     if (this.currentMode === 'clock') {
       this.updateDate(new Date());
-    } else if (this.currentMode === 'pomodoro') {
+    } else if (this.currentMode === 'countdown') {
       const minutes = Math.round(this.countdownDuration / 60);
-      if (this.countdownType === 'work') {
-        this.dateText.textContent = t.pomo_work_title(minutes);
-        this.dateSub.textContent = t.pomo_work_sub;
-      } else if (this.countdownType === 'shortBreak') {
-        this.dateText.textContent = t.pomo_short_title(minutes);
-        this.dateSub.textContent = t.pomo_break_sub;
-      } else {
-        this.dateText.textContent = t.pomo_long_title(minutes);
-        this.dateSub.textContent = t.pomo_break_sub;
-      }
-
-      this.updatePlayBtnState(t.btn_start_focus, t.btn_continue);
-    } else if (this.currentMode === 'slowlife') {
-      if (this.countdownType === 'egg6') {
-        this.dateText.textContent = t.slowlife_egg6_title;
-        this.dateSub.textContent = t.slowlife_egg6_sub;
-      } else if (this.countdownType === 'egg8') {
-        this.dateText.textContent = t.slowlife_egg8_title;
-        this.dateSub.textContent = t.slowlife_egg8_sub;
-      } else if (this.countdownType === 'egg10') {
-        this.dateText.textContent = t.slowlife_egg10_title;
-        this.dateSub.textContent = t.slowlife_egg10_sub;
-      } else if (this.countdownType === 'coffee') {
-        this.dateText.textContent = t.slowlife_coffee_title;
-        this.dateSub.textContent = this.getCoffeePhasePrompt();
-      } else if (this.countdownType === 'tea') {
-        this.dateText.textContent = t.slowlife_tea_title;
-        this.dateSub.textContent = t.slowlife_tea_sub;
-      }
-
-      this.updatePlayBtnState(t.btn_start_cook, t.btn_continue);
-    } else if (this.currentMode === 'cyber') {
-      const minutes = Math.round(this.countdownDuration / 60);
-      if (this.countdownRemaining <= 10 && this.countdownRemaining > 0 && this.countdownIsRunning) {
-        this.dateText.textContent = t.cyber_urgent_title;
-        this.dateSub.textContent = t.cyber_urgent_sub;
-      } else {
-        this.dateText.textContent = t.cyber_title(minutes);
-        this.dateSub.textContent = t.cyber_sub;
-      }
-
-      this.updatePlayBtnState(t.btn_start_cyber, t.btn_continue);
+      this.dateText.textContent = t.countdown_title(minutes);
+      this.dateSub.textContent = t.countdown_sub;
+      this.updatePlayBtnState(t.btn_start_timer, t.btn_continue);
     } else if (this.currentMode === 'stopwatch') {
       this.dateText.textContent = t.stopwatch_title;
       this.dateSub.textContent = t.stopwatch_sub;
@@ -1253,42 +1233,26 @@ class ZenFlipClock {
     this.countdownTimerId = setInterval(() => {
       this.countdownRemaining--;
 
-      // Cyber mode heartbeat in last 10 seconds
-      if (this.currentMode === 'cyber') {
-        if (this.countdownRemaining <= 10 && this.countdownRemaining > 0) {
-          document.body.classList.add('cyber-urgent');
-          if (window.ambientAudio) window.ambientAudio.playHeartbeat();
-        } else {
-          document.body.classList.remove('cyber-urgent');
-        }
-      }
+      // Clock tick sound
+      if (window.clockAudio) window.clockAudio.playTick();
 
       if (this.countdownRemaining <= 0) {
         this.countdownRemaining = 0;
         this.updateCountdownDisplay(true);
         this.updateProgressBar();
         this.pauseCountdown();
-        document.body.classList.remove('cyber-urgent');
-        this.triggerBombBoom();
+
+        if (this.currentVisual === 'bomb') {
+          this.triggerBombBoom();
+          if (window.clockAudio) window.clockAudio.playExplosion();
+        } else {
+          if (window.clockAudio) window.clockAudio.playZenChime();
+        }
 
         const t = I18N[this.lang] || I18N['zh-CN'];
-
-        if (this.currentMode === 'cyber') {
-          if (window.ambientAudio) window.ambientAudio.playDefuseSuccess();
-          this.dateText.textContent = t.cyber_done_title;
-          this.dateSub.textContent = t.cyber_done_sub;
-          document.title = `💥 ${t.cyber_done_title}`;
-        } else if (this.currentMode === 'slowlife') {
-          playZenBell();
-          this.dateText.textContent = t.slowlife_done_title;
-          this.dateSub.textContent = t.slowlife_done_sub;
-          document.title = `🍳 ${t.slowlife_done_title}`;
-        } else {
-          playZenBell();
-          this.dateText.textContent = t.pomo_done_title;
-          this.dateSub.textContent = t.pomo_done_sub;
-          document.title = `🔔 ${t.pomo_done_title}`;
-        }
+        this.dateText.textContent = t.countdown_done_title;
+        this.dateSub.textContent = t.countdown_done_sub;
+        document.title = `🔔 ${t.countdown_done_title}`;
         return;
       }
 
@@ -1301,8 +1265,7 @@ class ZenFlipClock {
       const m = Math.floor(this.countdownRemaining / 60);
       const s = this.countdownRemaining % 60;
       const str = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-      const icon = this.currentMode === 'cyber' ? '⚡' : (this.currentMode === 'slowlife' ? '🍳' : '🍅');
-      document.title = `(${str}) ${icon} ${t.tab_suffix}`;
+      document.title = `(${str}) ⏳ ${t.tab_suffix}`;
     }, 1000);
   }
 
@@ -1342,6 +1305,10 @@ class ZenFlipClock {
     clearInterval(this.stopwatchTimerId);
     this.stopwatchTimerId = setInterval(() => {
       this.stopwatchSeconds++;
+
+      // Clock tick sound
+      if (window.clockAudio) window.clockAudio.playTick();
+
       this.updateStopwatchDisplay(true);
       this.updatePacingUI();
 
@@ -1493,6 +1460,10 @@ class ZenFlipClock {
     const sec = parseInt(data.seconds, 10);
     const progress = (sec + (Date.now() % 1000) / 1000) / 60;
     this.updateVisualSync(data.hours, data.minutes, data.seconds, progress, true);
+
+    if (animate && window.clockAudio) {
+      window.clockAudio.playTick();
+    }
   }
 
   startClock() {

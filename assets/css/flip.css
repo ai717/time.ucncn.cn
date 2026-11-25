@@ -1318,15 +1318,155 @@ body.giant-stage .app-header {
 body.giant-stage .pacing-badge {
   transform: scale(1.15);
 }
+/* ================= Custom Time Panel ================= */
+.custom-time-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--panel-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 16px 20px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  margin-top: 8px;
+  max-width: 380px;
+  width: 90%;
+  animation: fadeIn 0.2s ease-out;
+  z-index: 25;
+}
+
+.custom-time-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.custom-time-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--digit-color);
+}
+
+.btn-close-panel {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.btn-close-panel:hover {
+  color: var(--digit-color);
+}
+
+.custom-time-inputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.time-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.time-input-group label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.time-input-group input {
+  width: 58px;
+  height: 44px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  color: var(--digit-color);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", monospace;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.time-input-group input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.25);
+}
+
+.custom-time-sep {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-top: 14px;
+}
+
+.custom-time-quick-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.quick-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.quick-chip:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--digit-color);
+}
+
+.quick-chip.chip-clear {
+  color: #ef4444;
+}
+
+.btn-apply-custom {
+  background: var(--accent-color);
+  color: #fff;
+  border: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 8px 24px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-apply-custom:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(249, 115, 22, 0.45);
+}
+
+/* ================= Clock Ticking Sound Selector Bar ================= */
+.clock-sound-bar,
 .ambient-bar {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   background: var(--panel-bg);
   border: 1px solid var(--border-subtle);
-  padding: 6px 14px;
+  padding: 5px 12px;
   border-radius: 999px;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -1335,23 +1475,33 @@ body.giant-stage .pacing-badge {
   transition: all 0.3s ease;
 }
 
+.sound-bar-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-right: 4px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.sound-pill,
 .ambient-pill,
 .wakelock-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border-subtle);
   color: var(--text-dim);
   padding: 4px 10px;
   border-radius: 999px;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
 }
 
+.sound-pill:hover,
 .ambient-pill:hover,
 .wakelock-pill:hover {
   color: var(--digit-color);
@@ -1359,6 +1509,7 @@ body.giant-stage .pacing-badge {
   transform: translateY(-1px);
 }
 
+.sound-pill.active,
 .ambient-pill.active {
   color: #fff;
   background: var(--accent-color);

@@ -16,6 +16,9 @@ const I18N = {
     title_lang: '切换为英文 / Switch to English',
     exit_fs: '按 F 或 ESC 退出全屏',
     btn_giant: '📺 巨幕',
+    btn_zen: '沉浸',
+    zen_exit_tip: '沉浸模式 · 点击退出 (快捷键 Z / ESC)',
+    seo_guide_title: '了解核心功能与使用场景指南 (点击展开/收起)',
 
     // Visual Representations
     visual_flip: '机械翻牌',
@@ -29,7 +32,7 @@ const I18N = {
     mode_stopwatch: '专注秒钟',
     mode_countdown: '倒计时',
 
-    footer_tip: '💡 双击任意处或按 <span class="kbd-badge">F</span> 键进入极简全屏 · 按 <span class="kbd-badge">M</span> 切换分类 · 按 <span class="kbd-badge">V</span> 切换形态',
+    footer_tip: '💡 双击任意处或按 <span class="kbd-badge">F</span> 全屏 · <span class="kbd-badge">Z</span> 沉浸 · <span class="kbd-badge">M</span> 分类 · <span class="kbd-badge">V</span> 形态',
     footer_slogan: '专注时钟 & 倒计时',
     theme_oled: 'OLED 纯黑',
     theme_parchment: '羊皮纸白',
@@ -101,6 +104,9 @@ const I18N = {
     title_lang: 'Switch to Chinese / 切换为中文',
     exit_fs: 'Press F or ESC to exit fullscreen',
     btn_giant: '📺 Stage',
+    btn_zen: 'Zen',
+    zen_exit_tip: 'Zen Mode · Click to exit (Shortcut Z / ESC)',
+    seo_guide_title: 'Features & Usage Guide (Click to expand/collapse)',
 
     // Visual Representations
     visual_flip: 'Flip Clock',
@@ -114,7 +120,7 @@ const I18N = {
     mode_stopwatch: 'Stopwatch',
     mode_countdown: 'Countdown',
 
-    footer_tip: '💡 Double-click or press <span class="kbd-badge">F</span> for fullscreen · <span class="kbd-badge">M</span> switch mode · <span class="kbd-badge">V</span> visual',
+    footer_tip: '💡 Double-click or press <span class="kbd-badge">F</span> fullscreen · <span class="kbd-badge">Z</span> Zen · <span class="kbd-badge">M</span> mode · <span class="kbd-badge">V</span> visual',
     footer_slogan: 'Focus Clock & Timer',
     theme_oled: 'OLED Pure Dark',
     theme_parchment: 'Parchment White',
@@ -445,6 +451,8 @@ class ZenFlipClock {
     this.secondsLabel = document.getElementById('seconds-label');
     this.btnFullscreen = document.getElementById('btn-fullscreen');
     this.btnGiant = document.getElementById('btn-giant');
+    this.btnZen = document.getElementById('btn-zen');
+    this.zenExitPill = document.getElementById('zen-exit-pill');
     this.btnLang = document.getElementById('btn-lang');
     this.langLabel = document.getElementById('lang-label');
     this.themeDots = document.querySelectorAll('.theme-dot');
@@ -882,6 +890,15 @@ class ZenFlipClock {
       });
     }
 
+    // Pure Zen Immersive Mode (只留主界面，不留各种按钮)
+    if (this.btnZen) {
+      this.btnZen.addEventListener('click', () => this.toggleZenMode());
+    }
+
+    if (this.zenExitPill) {
+      this.zenExitPill.addEventListener('click', () => this.toggleZenMode(false));
+    }
+
     // Toggle 12H / 24H
     this.btn12h.addEventListener('click', () => {
       this.is12Hour = !this.is12Hour;
@@ -918,6 +935,14 @@ class ZenFlipClock {
       if (e.key === 'f' || e.key === 'F') {
         e.preventDefault();
         this.toggleFullscreen();
+      } else if (e.key === 'z' || e.key === 'Z') {
+        e.preventDefault();
+        this.toggleZenMode();
+      } else if (e.key === 'Escape') {
+        if (document.body.classList.contains('mode-zen')) {
+          e.preventDefault();
+          this.toggleZenMode(false);
+        }
       } else if (e.code === 'Space') {
         if (this.currentMode !== 'clock') {
           e.preventDefault();
@@ -1119,6 +1144,13 @@ class ZenFlipClock {
         document.exitFullscreen().catch(err => console.warn(err));
       }
     }
+  }
+
+  toggleZenMode(force) {
+    this.triggerHaptic(12);
+    const isZen = force !== undefined ? force : !document.body.classList.contains('mode-zen');
+    document.body.classList.toggle('mode-zen', isZen);
+    if (this.btnZen) this.btnZen.classList.toggle('active', isZen);
   }
 
   cycleMode() {

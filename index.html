@@ -134,6 +134,11 @@
 
   <!-- Fullscreen Exit Floating Hint -->
   <div class="fs-exit-hint" id="fs-exit-hint">按 F 或 ESC 退出全屏</div>
+  <!-- Zen Mode Floating Exit Pill -->
+  <div class="zen-exit-pill" id="zen-exit-pill" title="点击退出沉浸专注模式">
+    <span>✨</span>
+    <span id="zen-exit-tip" data-i18n="zen_exit_tip">沉浸模式 · 点击退出 (快捷键 Z / ESC)</span>
+  </div>
 
   <div class="app-container">
     <!-- Header Controls -->
@@ -156,6 +161,12 @@
         <button id="btn-lang" class="btn-ctrl" title="中英切换 / Toggle Language">
           <span style="font-size: 0.85rem;">🌐</span>
           <span id="lang-label">EN</span>
+        </button>
+
+        <!-- Pure Zen Immersive Mode Button -->
+        <button id="btn-zen" class="btn-ctrl" title="沉浸模式：只留主界面 (快捷键 Z)">
+          <span style="font-size: 0.85rem;">🧘</span>
+          <span id="zen-label" data-i18n="btn_zen">沉浸</span>
         </button>
 
         <button id="btn-giant" class="btn-ctrl" title="巨幕演讲大字模式 / Giant Stage Mode">📺 巨幕</button>
@@ -785,7 +796,13 @@
 
     <!-- Rich Semantic SEO Guide & Scenarios Section (Google Indexing & Monetization Target) -->
     <section class="seo-guide-section" id="seo-guide-section" aria-label="全屏时钟与秒表使用指南">
-      <div class="seo-container">
+      <details class="seo-guide-details" id="seo-guide-details">
+        <summary class="seo-guide-summary">
+          <span class="summary-icon">📖</span>
+          <span class="summary-title" id="seo-guide-title" data-i18n="seo_guide_title">了解核心功能与使用场景指南 (点击展开/收起)</span>
+          <span class="seo-guide-chevron">▾</span>
+        </summary>
+        <div class="seo-container">
         <header class="seo-header">
           <h2 class="seo-title">专注时钟 & 在线全屏秒表：为专业汇报、课堂控时与沉浸专注打造</h2>
           <p class="seo-subtitle">集机械翻牌、金属扫秒表盘、趣味引线炸弹、晶莹流沙漏斗与复古落地摆钟于一体的高颜值纯前端工具</p>
@@ -852,6 +869,7 @@
           </div>
         </div>
       </div>
+      </details>
     </section>
 
     <!-- Footer Status & Tips -->

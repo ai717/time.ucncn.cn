@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>专注时钟 & 倒计时 - 让工位静下来，让时间看得见</title>
+  <meta name="description" content="专为工位办公、旧平板/iPad横屏桌面改造、学生沉浸自习打造的高颜值纯前端「专注时钟 & 倒计时」：3D机械翻牌、扫秒大表盘、晶莹流沙、火花炸弹与白噪音专注空间。">
+  <meta name="theme-color" content="#09090b">
+  <link rel="stylesheet" href="assets/css/flip.css?v=1.0.5">
+</head>
+<body>
+  <!-- Fullscreen Exit Floating Hint -->
+  <div class="fs-exit-hint" id="fs-exit-hint">按 F 或 ESC 退出全屏</div>
+
+  <div class="app-container">
+    <!-- Header Controls -->
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-icon">⏳</span>
+        <h1 class="brand-title" id="brand-title" data-i18n="brand_title">专注时钟 & 倒计时</h1>
+        <span class="brand-tag">v1.0</span>
+      </div>
+
+      <div class="controls-group">
+        <!-- Theme Selector Dots -->
+        <div class="theme-selector" id="theme-selector" role="radiogroup" aria-label="主题配色">
+          <button class="theme-dot active" data-theme-val="oled" title="OLED 纯黑" aria-label="OLED 纯黑"></button>
+          <button class="theme-dot" data-theme-val="parchment" title="羊皮纸白" aria-label="羊皮纸白"></button>
+          <button class="theme-dot" data-theme-val="amber" title="暖橘微光" aria-label="暖橘微光"></button>
+        </div>
+
+        <!-- Language Toggle -->
+        <button id="btn-lang" class="btn-ctrl" title="中英切换 / Toggle Language">
+          <span style="font-size: 0.85rem;">🌐</span>
+          <span id="lang-label">EN</span>
+        </button>
+
+        <button id="btn-giant" class="btn-ctrl" title="巨幕演讲大字模式 / Giant Stage Mode">📺 巨幕</button>
+        <button id="btn-12h" class="btn-ctrl" title="切换 12/24 小时制">24H</button>
+        <button id="btn-seconds" class="btn-ctrl active" title="显示/隐藏秒钟">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span id="seconds-label">秒钟</span>
+        </button>
+        <button id="btn-fullscreen" class="btn-ctrl btn-icon" title="全屏模式 (快捷键 F)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Display Stage (4 Visual Forms: 📟 Flip / ⏱️ Dial / ⏳ Sand / 💣 Bomb) -->
+    <main class="stage-main">
+      <!-- Visual Representations Switcher Bar -->
+      <nav class="visual-mode-bar" id="visual-mode-bar" role="tablist" aria-label="展示形态切换">
+        <button class="visual-btn active" data-visual="flip" title="机械翻牌 (快捷键 V)">
+          <span>📟</span> <span data-i18n="visual_flip">机械翻牌</span>
+        </button>
+        <button class="visual-btn" data-visual="dial" title="扫秒表盘 (快捷键 V)">
+          <span>⏱️</span> <span data-i18n="visual_dial">扫秒表盘</span>
+        </button>
+        <button class="visual-btn" data-visual="sand" title="流沙漏斗 (快捷键 V)">
+          <span>⏳</span> <span data-i18n="visual_sand">流沙漏斗</span>
+        </button>
+        <button class="visual-btn" data-visual="bomb" title="火花炸弹 (快捷键 V)">
+          <span>💣</span> <span data-i18n="visual_bomb">火花炸弹</span>
+        </button>
+      </nav>
+
+      <!-- 1. Visual Form: Split-Flap Clock -->
+      <div class="visual-container active" id="visual-container-flip">
+        <div class="clock-wrapper" id="clock-wrapper">
+        <!-- Meridiem AM/PM Badge for 12H mode -->
+        <div id="meridiem-badge" class="meridiem-badge">AM</div>
+
+        <div class="clock-display">
+          <!-- Hours Group -->
+          <div class="digit-group group-hours">
+            <div class="flip-card" id="card-h1">
+              <div class="card-half card-top static-top"><span class="digit-char">0</span></div>
+              <div class="card-half card-bottom static-bottom">
+                <span class="digit-char">0</span>
+                <div class="static-bottom-shadow"></div>
+              </div>
+              <div class="flip-leaf">
+                <div class="leaf-front">
+                  <span class="digit-char">0</span>
+                  <div class="leaf-shadow"></div>
+                </div>
+                <div class="leaf-back">
+                  <span class="digit-char">0</span>
+                  <div class="leaf-shadow"></div>
+                </div>
+              </div>
+              <div class="flip-card-seam"></div>
+            </div>
+
+            <div class="flip-card" id="card-h2">
+              <div class="card-half card-top static-top"><span class="digit-char">0</span></div>
+              <div class="card-half card-bottom static-bottom">
+                <span class="digit-char">0</span>
+                <div class="static-bottom-shadow"></div>
+              </div>
+              <div class="flip-leaf">
+                <div class="leaf-front">
+                  <span class="digit-char">0</span>
+                  <div class="leaf-shadow"></div>
+                </div>
+                <div class="leaf-back">
+                  <span class="digit-char">0</span>
+                  <div class="leaf-shadow"></div>
+                </div>
+              </div>
+              <div class="flip-card-seam"></div>
+            </div>
+          </div>
+
+          <!-- Colon Separator 1 -->
+          <div class="time-separator sep-hours pulsing">
+            <span class="sep-dot"></span>
+            <span class="sep-dot"></span>
+          </div>
+
+          <!-- Minutes Group -->
+          <div class="digit-group group-minutes">
+            <div class="flip-card" id="card-m1">
+              <div class="card-half card-top static-top"><span class="digit-char">0</span></div>
+              <div class="card-half card-bottom static-bottom">
+                <span class="digit-char">0</span>
+                <div class="static-bottom-shadow"></div>
+              </div>
+              <div class="flip-leaf">
+                <div class="leaf-front">
+                  <span class="digit-char">0</span>
+                  <div class="leaf-shadow"></div>
+                </div>
+                <div class="leaf-back">
+                  <span class="digit-char">0</span>
+                  <div class="leaf-shadow"></div>
+                </div>
+              </div>
+              <div class="flip-card-seam"></div>
+            </div>
+
+            <div class="flip-card" id="card-m2">
+              <div class="card-half card-top static-top"><span class="digit-char">0</span></div>
+              <div class="card-half card-bottom static-bottom">
+                <span class="digit-char">0</span>
+                <div class="static-bottom-shadow"></div>
+              </div>
+              <div class="flip-leaf">
+                <div class="leaf-front">
+                  <span class="digit-char">0</span>
+                  <div class="leaf-shadow"></div>
+                </div>
+                <div class="leaf-back">
+                  <span class="digit-char">0</span>
+                  <div class="leaf-shadow"></div>
+                </div>
+              </div>
+              <div class="flip-card-seam"></div>
+            </div>
+          </div>
+
+          <!-- Colon Separator 2 -->
+          <div class="time-separator sep-seconds pulsing">
+            <span class="sep-dot"></span>
+            <span class="sep-dot"></span>
+          </div>
+
+          <!-- Seconds Group -->
+          <div class="digit-group group-seconds">
+            <div class="flip-card" id="card-s1">
+              <div class="card-half card-top static-top"><span class="digit-char">0</span></div>
+              <div class="card-half card-bottom static-bottom">
+                <span class="digit-char">0</span>
+                <div class="static-bottom-shadow"></div>
+              </div>
+              <div class="flip-leaf">
+                <div class="leaf-front">
+                  <span class="digit-char">0</span>
+                  <div class="leaf-shadow"></div>
+                </div>
+                <div class="leaf-back">
+                  <span class="digit-char">0</span>
+                  <div class="leaf-shadow"></div>
+                </div>
+              </div>
+              <div class="flip-card-seam"></div>
+            </div>
+
+            <div class="flip-card" id="card-s2">
+              <div class="card-half card-top static-top"><span class="digit-char">0</span></div>
+              <div class="card-half card-bottom static-bottom">
+                <span class="digit-char">0</span>
+                <div class="static-bottom-shadow"></div>
+              </div>
+              <div class="flip-leaf">
+                <div class="leaf-front">
+                  <span class="digit-char">0</span>
+                  <div class="leaf-shadow"></div>
+                </div>
+                <div class="leaf-back">
+                  <span class="digit-char">0</span>
+                  <div class="leaf-shadow"></div>
+                </div>
+              </div>
+              <div class="flip-card-seam"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End of Visual Form: Split-Flap Clock -->
+    </div>
+
+    <!-- 2. Visual Form: Classic Dial Stopwatch (扫秒表盘) -->
+    <div class="visual-container" id="visual-container-dial">
+      <div class="visual-dial-wrapper">
+        <div class="dial-crown" id="dial-crown" title="表冠"></div>
+        <div class="dial-case">
+          <div class="dial-face">
+            <!-- 60-Second Graduation Ticks -->
+            <svg class="dial-ticks-svg" id="dial-ticks-svg" viewBox="0 0 300 300">
+              <!-- Dial ring and numerals will be rendered crisp & clear -->
+              <circle cx="150" cy="150" r="136" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1.5" />
+              <!-- Numerals 60, 15, 30, 45 -->
+              <text x="150" y="32" class="dial-numeral">60</text>
+              <text x="272" y="154" class="dial-numeral">15</text>
+              <text x="150" y="276" class="dial-numeral">30</text>
+              <text x="28" y="154" class="dial-numeral">45</text>
+              <!-- 12 Major Hour/5-Min tick lines -->
+              <line x1="150" y1="18" x2="150" y2="38" class="dial-tick-major" />
+              <line x1="216" y1="36" x2="206" y2="53" class="dial-tick-major" />
+              <line x1="264" y1="84" x2="247" y2="94" class="dial-tick-major" />
+              <line x1="282" y1="150" x2="262" y2="150" class="dial-tick-major" />
+              <line x1="264" y1="216" x2="247" y2="206" class="dial-tick-major" />
+              <line x1="216" y1="264" x2="206" y2="247" class="dial-tick-major" />
+              <line x1="150" y1="282" x2="150" y2="262" class="dial-tick-major" />
+              <line x1="84" y1="264" x2="94" y2="247" class="dial-tick-major" />
+              <line x1="36" y1="216" x2="53" y2="206" class="dial-tick-major" />
+              <line x1="18" y1="150" x2="38" y2="150" class="dial-tick-major" />
+              <line x1="36" y1="84" x2="53" y2="94" class="dial-tick-major" />
+              <line x1="84" y1="36" x2="94" y2="53" class="dial-tick-major" />
+            </svg>
+            <!-- Sweeping Mechanical Needle -->
+            <div class="dial-needle" id="dial-needle"></div>
+            <!-- Center Hub -->
+            <div class="dial-hub"></div>
+            <!-- Digital Readout Sub-Display -->
+            <div class="dial-readout" id="dial-readout">00:00:00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Visual Form: Glass Hourglass (晶莹流沙漏斗) -->
+    <div class="visual-container" id="visual-container-sand">
+      <div class="visual-sand-wrapper">
+        <div class="hourglass-plate-top"></div>
+        <div class="hourglass-glass">
+          <div class="hourglass-bulb-top">
+            <div class="sand-fill-top" id="sand-fill-top"></div>
+          </div>
+          <div class="hourglass-neck"></div>
+          <div class="hourglass-bulb-bottom">
+            <div class="sand-fill-bottom" id="sand-fill-bottom"></div>
+          </div>
+          <div class="sand-trickle" id="sand-trickle"></div>
+          <div class="hourglass-readout" id="sand-readout">25:00</div>
+        </div>
+        <div class="hourglass-plate-bottom"></div>
+      </div>
+    </div>
+
+    <!-- 4. Visual Form: Spark Fuse Bomb (火花炸弹) -->
+    <div class="visual-container" id="visual-container-bomb">
+      <div class="visual-bomb-wrapper">
+        <div class="bomb-fuse-box" id="bomb-fuse-box">
+          <svg class="bomb-fuse-svg" id="bomb-fuse-svg" viewBox="0 0 140 70">
+            <!-- Background Fuse Curve -->
+            <path id="bomb-fuse-bg" class="bomb-fuse-bg" d="M 12 18 C 45 4, 85 52, 115 18 C 122 8, 128 30, 130 68" />
+            <!-- Burned Out Dark Core Path -->
+            <path id="bomb-fuse-burn" class="bomb-fuse-burn" d="M 12 18 C 45 4, 85 52, 115 18 C 122 8, 128 30, 130 68" />
+          </svg>
+          <!-- Dynamic Burning Spark -->
+          <div class="bomb-spark" id="bomb-spark"></div>
+        </div>
+        <div class="bomb-body">
+          <div class="bomb-cap"></div>
+          <div class="bomb-led-screen">
+            <div class="bomb-led-digits" id="bomb-readout">25:00</div>
+          </div>
+        </div>
+        <!-- Explosion Blast Overlay -->
+        <div class="bomb-boom-overlay" id="bomb-boom-overlay">💥 BOOM!</div>
+      </div>
+    </div>
+
+      <!-- Hairline Progress Bar -->
+      <div class="time-progress-bar" id="time-progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+
+      <!-- Traffic Light Pacing Indicator (Stage & Keynote) -->
+      <div class="pacing-badge" id="pacing-badge">
+        <span class="pacing-dot"></span>
+        <span id="pacing-text">控时良好</span>
+      </div>
+
+      <!-- Date & Weekday Ribbon -->
+      <div class="date-ribbon">
+        <div id="date-text" class="date-text">2026年11月25日 星期三</div>
+        <div id="date-sub" class="date-sub">专注此时此刻 · 让工位静下来</div>
+      </div>
+
+      <!-- Mode Selector (5 Modes) -->
+      <nav class="modes-bar" aria-label="专注模式切换">
+        <button class="mode-btn active" data-mode="clock" id="mode-clock">
+          <span>🕒</span> <span data-i18n="mode_clock">实时时钟</span>
+        </button>
+        <button class="mode-btn" data-mode="pomodoro" id="mode-pomodoro">
+          <span>🍅</span> <span data-i18n="mode_pomodoro">番茄自习</span>
+        </button>
+        <button class="mode-btn" data-mode="stopwatch" id="mode-stopwatch">
+          <span>⏱️</span> <span data-i18n="mode_stopwatch">专注秒表</span>
+        </button>
+        <button class="mode-btn" data-mode="slowlife" id="mode-slowlife">
+          <span>🍳</span> <span data-i18n="mode_slowlife">慢生活</span>
+        </button>
+        <button class="mode-btn" data-mode="cyber" id="mode-cyber">
+          <span>⚡</span> <span data-i18n="mode_cyber">赛博冲刺</span>
+        </button>
+      </nav>
+
+      <!-- Timer Action Bar (for Pomodoro, Stopwatch, Slowlife, Cyber) -->
+      <div class="timer-action-bar" id="timer-action-bar" style="display: none;">
+        <!-- Primary Action Button -->
+        <button id="btn-timer-toggle" class="btn-timer-primary">
+          <span id="timer-toggle-icon">▶</span>
+          <span id="timer-toggle-label">开始专注</span>
+        </button>
+
+        <!-- Reset Button -->
+        <button id="btn-timer-reset" class="btn-timer-secondary" title="重置 (R)">
+          <span>🔄</span>
+          <span id="timer-reset-label">重置</span>
+        </button>
+
+        <!-- Lap Button (Only in Stopwatch) -->
+        <button id="btn-timer-lap" class="btn-timer-secondary" style="display: none;" title="记录计次 (L)">
+          <span>🏁</span>
+          <span id="timer-lap-label">计次</span>
+        </button>
+
+        <!-- Pacing Indicator Toggle (Stopwatch) -->
+        <button id="btn-pacing-toggle" class="btn-timer-secondary" style="display: none;" title="开关控时红绿灯">
+          <span>🚦</span>
+          <span id="pacing-toggle-label">控时灯</span>
+        </button>
+
+        <!-- 1. Pomodoro Presets -->
+        <div class="pomo-presets" id="pomo-presets">
+          <button class="btn-timer-pill active" data-pomo-type="work" data-minutes="25">
+            🍅 25m
+          </button>
+          <button class="btn-timer-pill" data-pomo-type="shortBreak" data-minutes="5">
+            ☕ 5m
+          </button>
+          <button class="btn-timer-pill" data-pomo-type="longBreak" data-minutes="15">
+            🍵 15m
+          </button>
+        </div>
+
+        <!-- 2. Slow Life Presets (Eggs & Coffee) -->
+        <div class="pomo-presets" id="slowlife-presets" style="display: none;">
+          <button class="btn-timer-pill active" data-slowlife-type="egg6" data-minutes="6">
+            🍳 6m 溏心蛋
+          </button>
+          <button class="btn-timer-pill" data-slowlife-type="egg8" data-minutes="8">
+            🥚 8m 软心蛋
+          </button>
+          <button class="btn-timer-pill" data-slowlife-type="egg10" data-minutes="10">
+            🍳 10m 全熟蛋
+          </button>
+          <button class="btn-timer-pill" data-slowlife-type="coffee" data-minutes="3">
+            ☕ 3m 手冲咖啡
+          </button>
+          <button class="btn-timer-pill" data-slowlife-type="tea" data-minutes="4">
+            🍵 4m 工夫茶
+          </button>
+        </div>
+
+        <!-- 3. Cyber Defuse Presets -->
+        <div class="pomo-presets" id="cyber-presets" style="display: none;">
+          <button class="btn-timer-pill active" data-cyber-type="cyber1" data-minutes="1">
+            ⚡ 1m 闪击
+          </button>
+          <button class="btn-timer-pill" data-cyber-type="cyber3" data-minutes="3">
+            ⚡ 3m 冲刺
+          </button>
+          <button class="btn-timer-pill" data-cyber-type="cyber5" data-minutes="5">
+            ⚡ 5m 极限
+          </button>
+          <button class="btn-timer-pill" data-cyber-type="cyber10" data-minutes="10">
+            ⚡ 10m DDL
+          </button>
+        </div>
+      </div>
+
+      <!-- Stopwatch Lap Records -->
+      <div class="lap-container" id="lap-container" style="display: none;">
+        <div class="lap-header">
+          <span data-i18n="lap_title">🏁 计次记录 (Laps)</span>
+          <button id="btn-clear-laps" class="btn-clear-laps" data-i18n="lap_clear">清空</button>
+        </div>
+        <div class="lap-list" id="lap-list"></div>
+      </div>
+
+      <!-- Ambient Sound Mixer & Screen Wake Lock Ribbon -->
+      <div class="ambient-bar" id="ambient-bar">
+        <div class="ambient-pill" data-sound="rain" title="窗外细雨">
+          <span class="ambient-icon">🌧️</span>
+          <span class="ambient-name" data-i18n="sound_rain">细雨</span>
+        </div>
+        <div class="ambient-pill" data-sound="fireplace" title="温暖壁炉">
+          <span class="ambient-icon">🔥</span>
+          <span class="ambient-name" data-i18n="sound_fireplace">壁炉</span>
+        </div>
+        <div class="ambient-pill" data-sound="cafe" title="街角咖啡">
+          <span class="ambient-icon">☕</span>
+          <span class="ambient-name" data-i18n="sound_cafe">咖啡馆</span>
+        </div>
+        <div class="ambient-pill" data-sound="clock" title="机械钟摆">
+          <span class="ambient-icon">⏱️</span>
+          <span class="ambient-name" data-i18n="sound_clock">钟摆</span>
+        </div>
+        <button id="btn-wakelock" class="wakelock-pill active" title="点击开关防息屏 (Keep Screen On)">
+          <span class="wakelock-icon">🔒</span>
+          <span id="wakelock-label">防息屏</span>
+        </button>
+      </div>
+    </main>
+
+    <!-- Footer Status & Tips -->
+    <footer class="app-footer">
+      <div class="footer-tip">
+        <span id="footer-tip-text">💡 双击任意处或按 <span class="kbd-badge">F</span> 键进入极简全屏</span>
+      </div>
+      <div class="footer-links">
+        <span class="footer-link">time.ucncn.cn</span>
+        <span class="footer-link" id="footer-slogan" style="opacity: 0.6;">沉浸专注空间</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="assets/js/audio.js?v=1.0.5"></script>
+  <script src="assets/js/app.js?v=1.0.5"></script>
+</body>
+</html>

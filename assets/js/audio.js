@@ -66,6 +66,12 @@ class ClockTickAudioEngine {
       case 'chrono':
         this.playChronoTick();
         break;
+      case 'burn':
+        this.playBurnSound();
+        break;
+      case 'sand':
+        this.playSandSound();
+        break;
       default:
         break;
     }
@@ -225,6 +231,111 @@ class ClockTickAudioEngine {
     // Double pulse: gear engagement and escapement rebound
     playClick(0, 3600, 0.38);
     playClick(0.014, 2800, 0.28);
+  }
+
+  /**
+   * 5. 引线火花燃烧音 (Fuse Burn & Sizzle)
+   * 逼真火药引线燃烧：持续高频嘶嘶白噪 + 随机细微火星噼啪爆裂
+   */
+  playBurnSound() {
+    const now = this.ctx.currentTime;
+    const dur = 0.82;
+
+    // A. 持续燃烧嘶嘶声 (Sizzling noise)
+    const bufferSize = Math.floor(this.ctx.sampleRate * dur);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      const isBurst = Math.random() < 0.018;
+      data[i] = isBurst ? white * 2.0 : white * 0.7;
+    }
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    // Bandpass filter to isolate sizzling frequencies (3200Hz - 5600Hz)
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(4200, now);
+    filter.Q.setValueAtTime(1.8, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.linearRampToValueAtTime(0.35 * this.volume, now + 0.04);
+    gain.gain.setValueAtTime(0.32 * this.volume, now + dur - 0.1);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.masterGain);
+
+    noise.start(now);
+
+    // B. 随机细小火花噼啪爆裂声 (Micro Crackles)
+    const crackleOffsets = [0.12, 0.28, 0.52, 0.68];
+    crackleOffsets.forEach(offset => {
+      const crackleTime = now + offset;
+      const cOsc = this.ctx.createOscillator();
+      const cGain = this.ctx.createGain();
+
+      cOsc.type = 'sawtooth';
+      cOsc.frequency.setValueAtTime(2000 + Math.random() * 1000, crackleTime);
+      cOsc.frequency.exponentialRampToValueAtTime(180, crackleTime + 0.012);
+
+      cGain.gain.setValueAtTime(0.25 * this.volume, crackleTime);
+      cGain.gain.exponentialRampToValueAtTime(0.0001, crackleTime + 0.015);
+
+      cOsc.connect(cGain);
+      cGain.connect(this.masterGain);
+
+      cOsc.start(crackleTime);
+      cOsc.stop(crackleTime + 0.018);
+    });
+  }
+
+  /**
+   * 6. 细沙滑落涓涓流淌音 (Flowing Sand Trickle)
+   * 温润沉静的矿物颗粒滑落流淌声：柔和粉红滤波噪声，细腻沙粒摩擦质感
+   */
+  playSandSound() {
+    const now = this.ctx.currentTime;
+    const dur = 0.88;
+
+    const bufferSize = Math.floor(this.ctx.sampleRate * dur);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+
+    // Brown/pink smoothed noise for granular sand flow
+    let lastOut = 0.0;
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      lastOut = (lastOut * 0.92) + (white * 0.08); // Low-pass grain smoothing
+      const flutter = Math.sin(i * 0.02) * 0.15;
+      data[i] = (lastOut + white * 0.18) * (1 + flutter);
+    }
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    // Dual bandpass filter for soft mineral whisper texture
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(1850, now);
+    filter.frequency.linearRampToValueAtTime(1650, now + dur);
+    filter.Q.setValueAtTime(2.2, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.linearRampToValueAtTime(0.38 * this.volume, now + 0.08);
+    gain.gain.setValueAtTime(0.35 * this.volume, now + dur - 0.15);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.masterGain);
+
+    noise.start(now);
   }
 
   /**

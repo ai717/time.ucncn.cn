@@ -52,12 +52,14 @@ const I18N = {
     pacing_red: '超时预警 · 尽快收尾',
 
     // Clock Tick Sounds
-    sound_label: '秒针音:',
+    sound_label: '声音:',
     tick_mute: '静音',
     tick_mechanical: '机械发条',
     tick_quartz: '石英脉冲',
     tick_pendulum: '复古摆钟',
     tick_chrono: '精密秒表',
+    tick_burn: '燃烧',
+    tick_sand: '流沙',
     wakelock_on: '防息屏: 开启',
     wakelock_off: '防息屏: 关闭',
 
@@ -135,12 +137,14 @@ const I18N = {
     pacing_red: 'Overtime Alert · Conclude',
 
     // Clock Tick Sounds
-    sound_label: 'Tick Sound:',
+    sound_label: 'Sound:',
     tick_mute: 'Mute',
     tick_mechanical: 'Mechanical',
     tick_quartz: 'Quartz',
     tick_pendulum: 'Pendulum',
     tick_chrono: 'Chrono',
+    tick_burn: 'Burn',
+    tick_sand: 'Sand',
     wakelock_on: 'WakeLock: ON',
     wakelock_off: 'WakeLock: OFF',
 
@@ -505,6 +509,15 @@ class ZenFlipClock {
       countdown: ['flip', 'sand', 'bomb']
     };
 
+    // Automatic Sound Matching per Visual Representation
+    this.visualSoundMap = {
+      flip: 'mechanical',
+      pendulum: 'pendulum',
+      dial: 'chrono',
+      sand: 'sand',
+      bomb: 'burn'
+    };
+
     // Visual Representations State & DOM Elements
     this.currentVisual = localStorage.getItem('zenflip_visual') || 'flip';
     this.visualButtons = document.querySelectorAll('.visual-btn');
@@ -688,6 +701,17 @@ class ZenFlipClock {
         container.classList.toggle('active', name === visualName);
       }
     });
+
+    // Automatically match sound to the chosen visual representation
+    if (window.clockAudio) {
+      const matchedSound = this.visualSoundMap[visualName];
+      if (matchedSound) {
+        window.clockAudio.setTickSound(matchedSound);
+        this.soundPills.forEach(pill => {
+          pill.classList.toggle('active', pill.getAttribute('data-tick') === matchedSound);
+        });
+      }
+    }
 
     // Refresh display immediately for the newly selected visual
     if (this.currentMode === 'clock') {

@@ -493,13 +493,16 @@
     <div class="visual-container" id="visual-container-bomb">
       <div class="visual-bomb-wrapper">
         <div class="bomb-fuse-box" id="bomb-fuse-box">
-          <svg class="bomb-fuse-svg" id="bomb-fuse-svg" viewBox="0 0 140 70">
-            <!-- Background Fuse Curve -->
-            <path id="bomb-fuse-bg" class="bomb-fuse-bg" d="M 12 18 C 45 4, 85 52, 115 18 C 122 8, 128 30, 130 68" />
-            <!-- Burned Out Dark Core Path -->
-            <path id="bomb-fuse-burn" class="bomb-fuse-burn" d="M 12 18 C 45 4, 85 52, 115 18 C 122 8, 128 30, 130 68" />
+          <svg class="bomb-fuse-svg" id="bomb-fuse-svg" viewBox="0 0 220 110">
+            <!-- 1. Charred Black Ash Residue Path (Burned Core) -->
+            <path id="bomb-fuse-ash" class="bomb-fuse-ash"
+              d="M 22,28 C 45,5 95,8 118,32 C 140,54 185,15 204,42 C 218,65 185,92 142,76 C 105,62 108,92 110,110" />
+
+            <!-- 2. Unburnt Braided Rope Path (Burns Away from Tip to Bomb) -->
+            <path id="bomb-fuse-burn" class="bomb-fuse-burn"
+              d="M 22,28 C 45,5 95,8 118,32 C 140,54 185,15 204,42 C 218,65 185,92 142,76 C 105,62 108,92 110,110" />
           </svg>
-          <!-- Dynamic Burning Spark -->
+          <!-- Dynamic Burning Spark with Glowing Halos -->
           <div class="bomb-spark" id="bomb-spark"></div>
         </div>
         <div class="bomb-body">

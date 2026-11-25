@@ -535,6 +535,7 @@ class ZenFlipClock {
 
     // Bomb Visual Elements
     this.bombFuseBurn = document.getElementById('bomb-fuse-burn');
+    this.bombFuseAsh = document.getElementById('bomb-fuse-ash');
     this.bombSpark = document.getElementById('bomb-spark');
     this.bombReadout = document.getElementById('bomb-readout');
     this.bombBoomOverlay = document.getElementById('bomb-boom-overlay');
@@ -725,23 +726,39 @@ class ZenFlipClock {
     // 2. Sand Hourglass Update
     this.updateHourglass(progress, isRunning, shortStr);
 
-    // 3. Fuse Bomb Update
+    // 3. Fuse Bomb Update (Burns from tip to bomb neck)
     if (this.bombFuseBurn && this.bombSpark) {
       const clampedProg = Math.max(0, Math.min(1, progress));
-      const totalLen = 145;
-      const burnOffset = totalLen * (1 - clampedProg);
-      this.bombFuseBurn.style.strokeDasharray = `${totalLen}`;
-      this.bombFuseBurn.style.strokeDashoffset = `${burnOffset}`;
-
+      let totalLen = 350;
       try {
-        const pt = this.bombFuseBurn.getPointAtLength(totalLen * (1 - clampedProg));
-        this.bombSpark.style.left = `${pt.x}px`;
-        this.bombSpark.style.top = `${pt.y}px`;
-      } catch (err) {
-        this.bombSpark.style.left = `${12 + clampedProg * 118}px`;
-        this.bombSpark.style.top = `${18 + Math.sin(clampedProg * Math.PI) * 30}px`;
+        totalLen = this.bombFuseBurn.getTotalLength() || 350;
+      } catch (e) {
+        totalLen = 350;
       }
-      this.bombSpark.style.display = clampedProg >= 1 ? 'none' : 'block';
+
+      // Burn distance progresses from 0 (tip at 22,28) to totalLen (bomb cap at 110,110)
+      const burnedDist = clampedProg * totalLen;
+
+      // 1. Unburnt hemp rope: gap from 0 to burnedDist, remaining dash to totalLen
+      this.bombFuseBurn.style.strokeDasharray = `0 ${burnedDist.toFixed(1)} ${totalLen.toFixed(1)}`;
+      this.bombFuseBurn.style.strokeDashoffset = '0';
+
+      // 2. Charred black ash: visible from 0 up to burnedDist
+      if (this.bombFuseAsh) {
+        this.bombFuseAsh.style.strokeDasharray = `${burnedDist.toFixed(1)} ${totalLen.toFixed(1)}`;
+        this.bombFuseAsh.style.strokeDashoffset = '0';
+      }
+
+      // 3. Blazing spark point tracking along the winding fuse
+      try {
+        const pt = this.bombFuseBurn.getPointAtLength(burnedDist);
+        this.bombSpark.style.left = `${pt.x.toFixed(1)}px`;
+        this.bombSpark.style.top = `${pt.y.toFixed(1)}px`;
+      } catch (err) {
+        this.bombSpark.style.left = `${22 + clampedProg * 88}px`;
+        this.bombSpark.style.top = `${28 + clampedProg * 82}px`;
+      }
+      this.bombSpark.style.display = clampedProg >= 0.999 ? 'none' : 'block';
     }
     if (this.bombReadout) {
       this.bombReadout.textContent = shortStr;

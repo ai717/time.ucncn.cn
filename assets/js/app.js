@@ -511,8 +511,8 @@ class ZenFlipClock {
     this.dialReadout = document.getElementById('dial-readout');
 
     // Sand Visual Elements
-    this.sandFillTop = document.getElementById('sand-fill-top');
-    this.sandFillBottom = document.getElementById('sand-fill-bottom');
+    this.sandTopPath = document.getElementById('sand-top-path');
+    this.sandBottomPath = document.getElementById('sand-bottom-path');
     this.sandTrickle = document.getElementById('sand-trickle');
     this.sandReadout = document.getElementById('sand-readout');
 
@@ -695,19 +695,7 @@ class ZenFlipClock {
     }
 
     // 2. Sand Hourglass Update
-    if (this.sandFillTop && this.sandFillBottom) {
-      const clampedProg = Math.max(0, Math.min(1, progress));
-      const topHeight = Math.round((1 - clampedProg) * 82);
-      const bottomHeight = Math.round(clampedProg * 78);
-      this.sandFillTop.style.height = `${topHeight}%`;
-      this.sandFillBottom.style.height = `${bottomHeight}%`;
-    }
-    if (this.sandTrickle) {
-      this.sandTrickle.classList.toggle('paused', !isRunning || progress >= 1);
-    }
-    if (this.sandReadout) {
-      this.sandReadout.textContent = shortStr;
-    }
+    this.updateHourglass(progress, isRunning, shortStr);
 
     // 3. Fuse Bomb Update
     if (this.bombFuseBurn && this.bombSpark) {
@@ -729,6 +717,50 @@ class ZenFlipClock {
     }
     if (this.bombReadout) {
       this.bombReadout.textContent = shortStr;
+    }
+  }
+
+  updateHourglass(progress, isRunning, timeStr) {
+    const p = Math.max(0, Math.min(1, progress));
+
+    // 1. Top bulb sand path
+    if (this.sandTopPath) {
+      if (p >= 0.995) {
+        this.sandTopPath.setAttribute('d', '');
+      } else {
+        const topY = 30 + p * 144;
+        const halfW = 75 * Math.pow(Math.max(0.01, 1 - p * 0.96), 0.45) + 3;
+        const leftX = 120 - halfW;
+        const rightX = 120 + halfW;
+        const dip = p >= 0.94 ? 0 : Math.min(14, (1 - p) * 16);
+        const d = `M ${leftX.toFixed(1)},${topY.toFixed(1)} Q 120,${(topY + dip).toFixed(1)} ${rightX.toFixed(1)},${topY.toFixed(1)} C 175,115 140,155 125,175 L 115,175 C 100,155 65,115 ${leftX.toFixed(1)},${topY.toFixed(1)} Z`;
+        this.sandTopPath.setAttribute('d', d);
+      }
+    }
+
+    // 2. Trickle line animation & visibility
+    if (this.sandTrickle) {
+      const isFlowing = isRunning && p > 0.001 && p < 0.999;
+      this.sandTrickle.style.opacity = isFlowing ? '1' : (p >= 0.999 ? '0' : '0.25');
+    }
+
+    // 3. Bottom bulb sand mound
+    if (this.sandBottomPath) {
+      if (p <= 0.003) {
+        this.sandBottomPath.setAttribute('d', '');
+      } else {
+        const peakY = 330 - Math.pow(p, 0.72) * 115;
+        const baseHalfW = 16 + Math.pow(p, 0.5) * 59;
+        const bLeft = 120 - baseHalfW;
+        const bRight = 120 + baseHalfW;
+        const d = `M ${bLeft.toFixed(1)},330 Q 120,${peakY.toFixed(1)} ${bRight.toFixed(1)},330 Z`;
+        this.sandBottomPath.setAttribute('d', d);
+      }
+    }
+
+    // 4. Sand readout text below base
+    if (this.sandReadout) {
+      this.sandReadout.textContent = timeStr;
     }
   }
 

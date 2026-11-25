@@ -357,121 +357,58 @@ body {
   z-index: 8;
 }
 
-/* ================= 2. Glass Hourglass (晶莹流沙漏斗) ================= */
+/* ================= 2. Luxury Glass Hourglass (高颜值晶莹流沙漏斗) ================= */
 .visual-sand-wrapper {
   position: relative;
-  width: clamp(200px, 28vw, 280px);
-  height: clamp(270px, 38vw, 380px);
+  width: clamp(210px, 28vw, 280px);
+  height: clamp(300px, 40vw, 390px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.5));
 }
 
-.hourglass-plate-top,
-.hourglass-plate-bottom {
-  width: 85%;
-  height: 14px;
-  background: linear-gradient(180deg, #3f3f46 0%, #18181b 100%);
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
-  z-index: 5;
-}
-
-.hourglass-glass {
-  position: relative;
-  width: 75%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: -3px 0;
-}
-
-.hourglass-bulb-top,
-.hourglass-bulb-bottom {
-  position: relative;
+.hourglass-svg {
   width: 100%;
-  flex: 1;
-  overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(4px);
-  box-shadow: inset 0 0 16px rgba(255, 255, 255, 0.06);
+  height: 84%;
+  overflow: visible;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.35));
 }
 
-.hourglass-bulb-top {
-  border-radius: 50% 50% 15% 15% / 35% 35% 65% 65%;
-  border-bottom: none;
+.hg-trickle-line {
+  stroke-dasharray: 6 3;
+  animation: sand-stream-flow 0.22s linear infinite;
+  transition: opacity 0.25s ease;
 }
 
-.hourglass-bulb-bottom {
-  border-radius: 15% 15% 50% 50% / 65% 65% 35% 35%;
-  border-top: none;
+@keyframes sand-stream-flow {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 9; }
 }
 
-.hourglass-neck {
-  width: 10px;
-  height: 6px;
-  background: transparent;
-  z-index: 4;
+.hourglass-readout-pill {
+  margin-top: 12px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  padding: 4px 18px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
 }
 
-.sand-fill-top {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 80%;
-  background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
-  border-radius: 0 0 8px 8px;
-  transition: height 0.4s ease;
-  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.3);
-}
-
-.sand-fill-bottom {
-  position: absolute;
-  bottom: 0;
-  left: 8%;
-  right: 8%;
-  height: 20%;
-  background: linear-gradient(180deg, #f59e0b 0%, #b45309 100%);
-  border-radius: 50% 50% 0 0;
-  transition: height 0.4s ease;
-}
-
-.sand-trickle {
-  position: absolute;
-  top: 48%;
-  bottom: 12%;
-  width: 3px;
-  background: #fbbf24;
-  opacity: 0.95;
-  z-index: 6;
-  box-shadow: 0 0 6px #f59e0b;
-}
-
-.sand-trickle.paused {
-  opacity: 0;
-}
-
-.hourglass-readout {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.hourglass-readout-time {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", monospace;
   font-variant-numeric: tabular-nums;
   font-size: clamp(1.2rem, 2.4vw, 1.6rem);
   font-weight: 700;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.65);
-  padding: 4px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  z-index: 10;
-  backdrop-filter: blur(8px);
+  color: var(--digit-color);
+  letter-spacing: 0.05em;
 }
 
 /* ================= 3. Fuse Bomb (引线火花炸弹) ================= */

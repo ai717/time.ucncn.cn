@@ -259,19 +259,89 @@
     <!-- 3. Visual Form: Glass Hourglass (晶莹流沙漏斗) -->
     <div class="visual-container" id="visual-container-sand">
       <div class="visual-sand-wrapper">
-        <div class="hourglass-plate-top"></div>
-        <div class="hourglass-glass">
-          <div class="hourglass-bulb-top">
-            <div class="sand-fill-top" id="sand-fill-top"></div>
-          </div>
-          <div class="hourglass-neck"></div>
-          <div class="hourglass-bulb-bottom">
-            <div class="sand-fill-bottom" id="sand-fill-bottom"></div>
-          </div>
-          <div class="sand-trickle" id="sand-trickle"></div>
-          <div class="hourglass-readout" id="sand-readout">25:00</div>
+        <svg class="hourglass-svg" id="hourglass-svg" viewBox="0 0 240 370">
+          <defs>
+            <!-- Rich Amber-Gold Sand Gradient -->
+            <linearGradient id="sand-gold-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#fef08a" />
+              <stop offset="25%" stop-color="#f59e0b" />
+              <stop offset="70%" stop-color="#d97706" />
+              <stop offset="100%" stop-color="#92400e" />
+            </linearGradient>
+
+            <!-- Glass Reflection Gradient -->
+            <linearGradient id="glass-reflection-grad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.45)" />
+              <stop offset="50%" stop-color="rgba(255,255,255,0.06)" />
+              <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+            </linearGradient>
+
+            <!-- Pillar Metallic Gradient -->
+            <linearGradient id="pillar-metal-grad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#52525b" />
+              <stop offset="35%" stop-color="#a1a1aa" />
+              <stop offset="70%" stop-color="#71717a" />
+              <stop offset="100%" stop-color="#27272a" />
+            </linearGradient>
+
+            <!-- Stand Base Gradient -->
+            <linearGradient id="stand-base-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3f3f46" />
+              <stop offset="50%" stop-color="#27272a" />
+              <stop offset="100%" stop-color="#18181b" />
+            </linearGradient>
+
+            <!-- Glass Interior Clip Path -->
+            <clipPath id="hourglass-interior-clip">
+              <path d="M 45,28 C 45,85 78,140 114,175 L 114,185 C 78,220 45,275 45,332 L 195,332 C 195,275 162,220 126,185 L 126,175 C 162,140 195,85 195,28 Z" />
+            </clipPath>
+          </defs>
+
+          <!-- 1. Support Pillars (Slender Structural Rods) -->
+          <rect x="22" y="24" width="7" height="312" rx="3.5" fill="url(#pillar-metal-grad)" />
+          <circle cx="25.5" cy="24" r="5" fill="#a1a1aa" opacity="0.85" />
+          <circle cx="25.5" cy="336" r="5" fill="#a1a1aa" opacity="0.85" />
+
+          <rect x="211" y="24" width="7" height="312" rx="3.5" fill="url(#pillar-metal-grad)" />
+          <circle cx="214.5" cy="24" r="5" fill="#a1a1aa" opacity="0.85" />
+          <circle cx="214.5" cy="336" r="5" fill="#a1a1aa" opacity="0.85" />
+
+          <!-- 2. Architectural Top & Bottom Plates -->
+          <rect x="14" y="14" width="212" height="15" rx="7.5" fill="url(#stand-base-grad)" stroke="rgba(255,255,255,0.18)" stroke-width="1.2" />
+          <rect x="26" y="24" width="188" height="5" rx="2" fill="rgba(255,255,255,0.06)" />
+
+          <rect x="14" y="331" width="212" height="15" rx="7.5" fill="url(#stand-base-grad)" stroke="rgba(255,255,255,0.18)" stroke-width="1.2" />
+          <rect x="26" y="331" width="188" height="5" rx="2" fill="rgba(0,0,0,0.5)" />
+
+          <!-- 3. Glass Tint & Ambient Shadow -->
+          <path d="M 45,28 C 45,85 78,140 114,175 L 114,185 C 78,220 45,275 45,332 L 195,332 C 195,275 162,220 126,185 L 126,175 C 162,140 195,85 195,28 Z" fill="rgba(255, 255, 255, 0.03)" />
+
+          <!-- 4. Dynamic Flowing Sand (Clipped inside Glass Interior) -->
+          <g clip-path="url(#hourglass-interior-clip)">
+            <!-- Top Sand Body -->
+            <path id="sand-top-path" fill="url(#sand-gold-grad)" d="M 45,30 C 45,85 78,140 114,175 L 126,175 C 162,140 195,85 195,30 Z" />
+
+            <!-- Flowing Sand Stream -->
+            <line id="sand-trickle" class="hg-trickle-line" x1="120" y1="172" x2="120" y2="330" stroke="url(#sand-gold-grad)" stroke-width="3" stroke-linecap="round" />
+
+            <!-- Bottom Sand Heap Mound -->
+            <path id="sand-bottom-path" fill="url(#sand-gold-grad)" d="M 70,332 Q 120,315 170,332 Z" />
+          </g>
+
+          <!-- 5. Glass Reflections & Specular Highlights -->
+          <!-- Left Specular Reflection -->
+          <path class="hg-specular-left" d="M 52,38 C 52,85 82,140 112,172 L 112,188 C 82,220 52,275 52,322" fill="none" stroke="url(#glass-reflection-grad)" stroke-width="3" stroke-linecap="round" />
+          <!-- Right Specular Rim Light -->
+          <path class="hg-specular-right" d="M 188,38 C 188,85 158,140 128,172 L 128,188 C 158,220 188,275 188,322" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.8" stroke-linecap="round" />
+
+          <!-- Outer Borosilicate Glass Contour Rim -->
+          <path class="hg-glass-rim" d="M 45,28 C 45,85 78,140 114,175 L 114,185 C 78,220 45,275 45,332 L 195,332 C 195,275 162,220 126,185 L 126,175 C 162,140 195,85 195,28 Z" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="2.5" />
+        </svg>
+
+        <!-- Floating Time Readout Pill (Elegantly Placed Below Base) -->
+        <div class="hourglass-readout-pill">
+          <span class="hourglass-readout-time" id="sand-readout">25:00</span>
         </div>
-        <div class="hourglass-plate-bottom"></div>
       </div>
     </div>
 

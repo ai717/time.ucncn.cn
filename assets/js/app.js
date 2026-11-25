@@ -684,6 +684,7 @@ class ZenFlipClock {
 
   // ================= Visual Representation Switching =================
   setVisual(visualName) {
+    this.triggerHaptic(10);
     const allowed = this.modeVisualMap[this.currentMode] || ['flip'];
     if (!allowed.includes(visualName) || !this.visualContainers[visualName]) {
       visualName = allowed[0];
@@ -1130,6 +1131,7 @@ class ZenFlipClock {
   // ================= Mode Switching Machine =================
   setMode(mode, autoMatchVisual = true) {
     if (this.currentMode === mode) return;
+    this.triggerHaptic(10);
     this.currentMode = mode;
 
     this.modeButtons.forEach(btn => {
@@ -1305,8 +1307,16 @@ class ZenFlipClock {
     }
   }
 
+  // Mobile Haptic Touch Feedback
+  triggerHaptic(ms = 12) {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      try { navigator.vibrate(ms); } catch (e) {}
+    }
+  }
+
   // ================= Timer Actions =================
   toggleTimer() {
+    this.triggerHaptic(12);
     if (this.currentMode === 'stopwatch') {
       if (this.stopwatchIsRunning) {
         this.pauseStopwatch();
@@ -1323,6 +1333,7 @@ class ZenFlipClock {
   }
 
   resetTimer() {
+    this.triggerHaptic(12);
     if (this.currentMode === 'stopwatch') {
       this.pauseStopwatch();
       this.stopwatchSeconds = 0;
@@ -1454,6 +1465,7 @@ class ZenFlipClock {
 
   recordLap() {
     if (this.currentMode !== 'stopwatch' || this.stopwatchSeconds === 0) return;
+    this.triggerHaptic(10);
 
     const total = this.stopwatchSeconds;
     const split = total - this.lastLapSeconds;

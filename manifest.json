@@ -1,0 +1,20 @@
+{
+  "name": "专注时钟 & 倒计时 | 在线全屏秒表 · 炸弹与沙漏计时器",
+  "short_name": "专注时钟",
+  "description": "专为会议室大屏、学校教室互动、工位办公与沉浸自习打造的高颜值在线全屏秒表与倒计时工具。支持3D机械翻牌、火花炸弹、拟真流沙与复古摆钟。",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "categories": ["utilities", "productivity", "education"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⏳</text></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

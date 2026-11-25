@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://time.ucncn.cn/</loc>
+    <lastmod>2026-11-25T13:50:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://time.ucncn.cn/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://time.ucncn.cn/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://time.ucncn.cn/" />
+  </url>
+</urlset>

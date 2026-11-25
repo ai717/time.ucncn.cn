@@ -2,11 +2,121 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>专注时钟 & 倒计时 - 让工位静下来，让时间看得见</title>
-  <meta name="description" content="专为工位办公、旧平板/iPad横屏桌面改造、学生沉浸自习打造的高颜值纯前端「专注时钟 & 倒计时」：3D机械翻牌、扫秒大表盘、晶莹流沙、火花炸弹与白噪音专注空间。">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>专注时钟 & 倒计时 | 在线全屏秒表 · 炸弹与沙漏倒计时 · 复古摆钟 · time.ucncn.cn</title>
+  <meta name="description" content="免费高颜值在线全屏秒表与倒计时工具：支持3D机械翻牌时钟、趣味炸弹引线计时、拟真流沙漏斗、复古机械摆钟与毫秒精密秒表。专为会议厅大屏投屏、学校教室互动、考场控时与沉浸自习打造，免下载即开即用。">
+  <meta name="keywords" content="在线秒表, 全屏秒表, 倒计时器, 炸弹计时器, 流沙倒计时, 复古摆钟, 专注时钟, 教室倒计时, 会议计时器, 考场秒表, 番茄钟, 3D翻牌时钟, online stopwatch, full screen timer, bomb countdown, hourglass timer, flip clock">
+  <meta name="author" content="time.ucncn.cn">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   <meta name="theme-color" content="#09090b">
-  <link rel="stylesheet" href="assets/css/flip.css?v=1.0.5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- Canonical URL & Multilingual Alternates -->
+  <link rel="canonical" href="https://time.ucncn.cn/">
+  <link rel="alternate" hreflang="zh-CN" href="https://time.ucncn.cn/">
+  <link rel="alternate" hreflang="en" href="https://time.ucncn.cn/?lang=en">
+  <link rel="alternate" hreflang="x-default" href="https://time.ucncn.cn/">
+
+  <!-- PWA Manifest & App Icons -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⏳</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⏳</text></svg>">
+
+  <!-- Open Graph / Facebook / WeChat Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://time.ucncn.cn/">
+  <meta property="og:title" content="专注时钟 & 倒计时 | 在线全屏秒表 · 炸弹与沙漏倒计时">
+  <meta property="og:description" content="专为会议室、学校教室、工位自习与旧平板改造打造的在线全屏时钟工具：机械翻牌、趣味炸弹、流沙漏斗与复古摆钟。">
+  <meta property="og:site_name" content="专注时钟 & 倒计时">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:locale:alternate" content="en_US">
+
+  <!-- Twitter Card Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="专注时钟 & 倒计时 | 在线全屏秒表 · 炸弹与沙漏倒计时">
+  <meta name="twitter:description" content="免费高颜值在线全屏秒表与倒计时工具：支持3D机械翻牌时钟、趣味炸弹引线计时、拟真流沙漏斗、复古机械摆钟与精密秒表。">
+
+  <!-- JSON-LD Structured Data: WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "专注时钟 & 倒计时",
+    "alternateName": "Focus Clock & Fullscreen Online Stopwatch",
+    "url": "https://time.ucncn.cn/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript and HTML5 Canvas/Audio support",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "专为会议厅大屏投屏、学校教室互动、考场控时与工位办公打造的高颜值在线全屏秒表与倒计时工具。支持3D机械翻牌、火花炸弹、拟真流沙与复古摆钟。",
+    "featureList": [
+      "实时时钟（3D机械翻牌 & 优雅复古落地摆钟）",
+      "专注秒钟（大字计圈 & 金属扫秒表盘）",
+      "倒计时（趣味火花引线炸弹 & 真实物理流沙漏斗）",
+      "纯前端 Web Audio 算法生成拟真时钟秒针音与流沙燃烧音效",
+      "巨幕大字演讲模式与红黄绿三色控时预警",
+      "移动端全屏触控与防息屏（Screen Wake Lock）"
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD Structured Data: FAQPage (Google SERP Rich Snippets) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "如何在会议大屏、学校教室或投影仪中进行全屏展示？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "在电脑或平板上打开 time.ucncn.cn，按键盘 F 键或右上角的全屏按钮，或在屏幕任意空白处双击，即可一键进入无边框纯净极简全屏模式。配合「巨幕」按钮，字体将自动放大，非常适合大型学术报告厅、会议讨论及课堂投影。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "炸弹计时器与流沙倒计时适合在哪些场景使用？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "火花引线炸弹计时器具有极强的视觉张力与悬念感，非常适合课堂头脑风暴、限时答题竞赛与敏捷开发站会；流沙漏斗倒计时采用真实物理流沙曲线堆积与沙沙细语声，适合沉浸式深度阅读、冥想打坐、番茄工作法与自习专注。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "手机或平板电脑在倒计时过程中会自动黑屏息屏吗？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "不会。网站内置了现代 Web Screen Wake Lock API 防息屏技术，默认开启「防息屏」常亮保护，确保作为桌面摆件时钟或厨房烘焙计时期间屏幕始终保持清晰点亮。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "网站是完全免费的吗？需要注册或下载 App 吗？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "完全免费、零弹窗广告、无需注册登录，也无需下载安装任何 App。支持手机、平板（iPad）、笔记本、台式机与智能电视浏览器即开即用。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "离线或断网情况下可以正常使用吗？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "完全可以。网站采用纯前端零外部音频资产依赖架构，所有秒针嘀嗒音、流沙滑落音与燃烧火花音均由 Web Audio API 实时程序化合成，页面首次加载后即可完全脱机离线运行。"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="assets/css/flip.css?v=1.0.6">
 </head>
 <body>
   <!-- Fullscreen Exit Floating Hint -->
@@ -660,6 +770,77 @@
       </div>
     </main>
 
+    <!-- Rich Semantic SEO Guide & Scenarios Section (Google Indexing & Monetization Target) -->
+    <section class="seo-guide-section" id="seo-guide-section" aria-label="全屏时钟与秒表使用指南">
+      <div class="seo-container">
+        <header class="seo-header">
+          <h2 class="seo-title">专注时钟 & 在线全屏秒表：为专业汇报、课堂控时与沉浸专注打造</h2>
+          <p class="seo-subtitle">集机械翻牌、金属扫秒表盘、趣味引线炸弹、晶莹流沙漏斗与复古落地摆钟于一体的高颜值纯前端工具</p>
+        </header>
+
+        <!-- 4 High-Value Scenarios Grid -->
+        <div class="seo-scenarios-grid">
+          <article class="scenario-card">
+            <div class="scenario-icon">💼</div>
+            <h3 class="scenario-title">会议室大屏与路演汇报控时</h3>
+            <p class="scenario-desc">支持一键进入无边框纯净全屏，配备专为学术报告与商务提案设计的「红黄绿」三色控时预警系统，精准把控演讲节拍，彻底告别汇报超时。</p>
+          </article>
+
+          <article class="scenario-card">
+            <div class="scenario-icon">🎓</div>
+            <h3 class="scenario-title">学校课堂互动与考场大屏倒计时</h3>
+            <p class="scenario-desc">引线火花炸弹与流沙漏斗让抽象的时间具象化。逼真的引线燃烧噼啪声与倒计时归零的清脆提示音，极大活跃课堂限时讨论、头脑风暴与测验答题氛围。</p>
+          </article>
+
+          <article class="scenario-card">
+            <div class="scenario-icon">🖥️</div>
+            <h3 class="scenario-title">工位沉浸专注与旧平板改造</h3>
+            <p class="scenario-desc">为旧 iPad、Android 平板或副屏桌面量身打造的极简桌面时钟。开启内置 Web Screen Wake Lock 防息屏保护，纯黑 OLED 配色静谧护眼，打造无干扰深度心流空间。</p>
+          </article>
+
+          <article class="scenario-card">
+            <div class="scenario-icon">⏱️</div>
+            <h3 class="scenario-title">体育训练与毫秒精密秒表</h3>
+            <p class="scenario-desc">专为健身冲刺、田径训练与魔方竞赛打造的高精度秒表。支持无限次实时分段计圈（Lap Split）、最快/最慢圈速统计与一键数据清除，键盘空格键即刻响应。</p>
+          </article>
+        </div>
+
+        <!-- FAQ Accordion for Google Search Rich Snippets -->
+        <div class="seo-faq-block">
+          <h2 class="faq-section-title">常见问题与操作指南 (FAQ)</h2>
+          <div class="faq-list">
+            <details class="faq-item" open>
+              <summary class="faq-question">如何在会议室大屏、教室投影或电视机上全屏展示？</summary>
+              <div class="faq-answer">
+                <p>在任意电脑、平板或智能电视浏览器中打开本站，点击右上角「全屏」图标或在屏幕任意空白区域双击（快捷键 <kbd>F</kbd>），即可立即进入零浏览器边框的沉浸全屏状态。若配合点击「巨幕」按钮，数字尺寸将进一步等比放大，数十米外依然清晰可辨。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">为什么不需要下载客户端就能长久防息屏常亮？</summary>
+              <div class="faq-answer">
+                <p>本站调用了 HTML5 最新的标准 <code>navigator.wakeLock</code> API。只要保持当前浏览器标签页处于前台活跃状态，即可在 iOS Safari、Android Chrome、macOS 及 Windows 上自动锁定屏幕常亮，无需在系统设置中费力关闭自动睡眠锁屏。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">倒计时的引线火花炸弹与流沙漏斗各自适合什么场景？</summary>
+              <div class="faq-answer">
+                <p><strong>火花引线炸弹</strong>以极具戏剧性的盘旋长引线慢慢燃烧到炸弹中心，适合游戏对抗、限时竞速、团队站会汇报等具有紧迫感的游戏化场景；<strong>流沙漏斗</strong>以高硼硅玻璃曲线和动态堆积的平滑沙丘展现时间的流逝，适合白领办公、自习阅读、瑜伽冥想与禅意生活。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">计时声音会消耗手机或电脑的网络流量吗？</summary>
+              <div class="faq-answer">
+                <p>完全不会！网站摒弃了一切体积庞大的音频文件加载，全套声音（经典机械发条、石英脉冲、复古落地钟摆、精密秒表齿轮音、黑火药引线滋滋燃烧音与细沙滑落微响）100% 由浏览器底层的 Web Audio API 算法根据物理声学特性实时数学合成，零流量消耗，断网离线亦能秒级发出悦耳声响。</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Footer Status & Tips -->
     <footer class="app-footer">
       <div class="footer-tip">
@@ -672,7 +853,7 @@
     </footer>
   </div>
 
-  <script src="assets/js/audio.js?v=1.0.5"></script>
-  <script src="assets/js/app.js?v=1.0.5"></script>
+  <script src="assets/js/audio.js?v=1.0.6"></script>
+  <script src="assets/js/app.js?v=1.0.6"></script>
 </body>
 </html>

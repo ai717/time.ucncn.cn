@@ -19,6 +19,7 @@ const I18N = {
     btn_zen: '沉浸',
     zen_exit_tip: '沉浸模式 · 点击退出 (快捷键 Z / ESC)',
     seo_guide_title: '了解核心功能与使用场景指南 (点击展开/收起)',
+    friends_title: '🔗 推荐伙伴 & 友情链接',
 
     // Visual Representations
     visual_flip: '机械翻牌',
@@ -107,6 +108,7 @@ const I18N = {
     btn_zen: 'Zen',
     zen_exit_tip: 'Zen Mode · Click to exit (Shortcut Z / ESC)',
     seo_guide_title: 'Features & Usage Guide (Click to expand/collapse)',
+    friends_title: '🔗 Partners & Friendly Links',
 
     // Visual Representations
     visual_flip: 'Flip Clock',
